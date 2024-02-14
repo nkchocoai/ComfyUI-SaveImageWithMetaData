@@ -1,0 +1,2 @@
+class BaseNode:
+    CATEGORY = "SaveImage"
