@@ -2,7 +2,7 @@ from .meta import MetaField
 from .validators import is_positive_prompt, is_negative_prompt
 
 
-hooks = {
+CAPTURE_FIELD_LIST = {
     "EmptyLatentImage": {
         MetaField.IMAGE_WIDTH: {"field_name": "width"},
         MetaField.IMAGE_HEIGHT: {"field_name": "height"},
