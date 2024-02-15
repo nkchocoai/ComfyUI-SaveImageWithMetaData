@@ -38,10 +38,10 @@ class Capture:
                         if value is not None:
                             format = field_data.get("format")
                             v = value
-                            if format is not None:
-                                v = format(v)
                             if isinstance(value, list) and len(value) > 0:
                                 v = value[0]
+                            if format is not None:
+                                v = format(v)
                             inputs[meta].append((node_id, v))
         return inputs
 
@@ -52,9 +52,9 @@ class Capture:
         def update_pnginfo_dict(metafield, key):
             x = inputs.get(metafield, [])
             if len(x) > 0:
-                pnginfo_dict[key] = x[-1][1]
+                pnginfo_dict[key] = x[0][1]
 
-        update_pnginfo_dict(MetaField.POSITIVE_PROMPT, "")
+        update_pnginfo_dict(MetaField.POSITIVE_PROMPT, "Positive prompt")
         update_pnginfo_dict(MetaField.NEGATIVE_PROMPT, "Negative prompt")
         update_pnginfo_dict(MetaField.STEPS, "Steps")
 
@@ -76,4 +76,24 @@ class Capture:
         if len(image_widths) > 0 and len(image_heights) > 0:
             pnginfo_dict["Size"] = f"{image_widths[0][1]}x{image_heights[0][1]}"
 
+        update_pnginfo_dict(MetaField.MODEL_NAME, "Model name")
+        update_pnginfo_dict(MetaField.MODEL_HASH, "Model hash")
+
         return pnginfo_dict
+
+    @classmethod
+    def gen_parameters_str(cls, pnginfo_dict):
+        result = pnginfo_dict.get("Positive prompt", "") + "\n"
+        result += "Negative prompt: " + pnginfo_dict.get("Negative prompt", "") + "\n"
+
+        s_list = []
+        pnginfo_dict_without_prompt = {
+            k: v
+            for k, v in pnginfo_dict.items()
+            if k not in {"Positive prompt", "Negative prompt"}
+        }
+        for k, v in pnginfo_dict_without_prompt.items():
+            s = str(v).strip().replace("\n", " ")
+            s_list.append(f"{k}: {s}")
+
+        return result + ", ".join(s_list)

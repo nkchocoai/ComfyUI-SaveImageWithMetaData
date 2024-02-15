@@ -3,6 +3,7 @@ from enum import Enum
 
 class MetaField(Enum):
     MODEL_NAME = 0
+    MODEL_HASH = 1
     POSITIVE_PROMPT = 10
     NEGATIVE_PROMPT = 11
     SEED = 20

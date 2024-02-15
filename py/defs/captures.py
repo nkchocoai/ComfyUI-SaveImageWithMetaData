@@ -1,8 +1,13 @@
 from .meta import MetaField
 from .validators import is_positive_prompt, is_negative_prompt
+from .formatters import calc_model_hash
 
 
 CAPTURE_FIELD_LIST = {
+    "CheckpointLoaderSimple": {
+        MetaField.MODEL_NAME: {"field_name": "ckpt_name"},
+        MetaField.MODEL_HASH: {"field_name": "ckpt_name", "format": calc_model_hash},
+    },
     "EmptyLatentImage": {
         MetaField.IMAGE_WIDTH: {"field_name": "width"},
         MetaField.IMAGE_HEIGHT: {"field_name": "height"},

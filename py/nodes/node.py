@@ -1,4 +1,5 @@
 import json
+import os
 
 from PIL import Image
 from PIL.PngImagePlugin import PngInfo
@@ -63,7 +64,10 @@ class SaveImageWithMetaData(BaseNode):
             metadata = None
             if not args.disable_metadata:
                 metadata = PngInfo()
-                # metadata.add_text("parameters", comment)
+                if pnginfo_dict:
+                    metadata.add_text(
+                        "parameters", Capture.gen_parameters_str(pnginfo_dict)
+                    )
                 if prompt is not None:
                     metadata.add_text("prompt", json.dumps(prompt))
                 if extra_pnginfo is not None:
@@ -71,11 +75,11 @@ class SaveImageWithMetaData(BaseNode):
                         metadata.add_text(x, json.dumps(extra_pnginfo[x]))
 
             file = f"{filename}_{counter:05}_.png"
-            # img.save(
-            #     os.path.join(full_output_folder, file),
-            #     pnginfo=metadata,
-            #     compress_level=self.compress_level,
-            # )
+            img.save(
+                os.path.join(full_output_folder, file),
+                pnginfo=metadata,
+                compress_level=self.compress_level,
+            )
             results.append(
                 {"filename": file, "subfolder": subfolder, "type": self.type}
             )
