@@ -57,11 +57,12 @@ class SaveImageWithMetaData(BaseNode):
             inputs = Capture.get_inputs()
             print("[get_inputs]")
             print(inputs)
+
+            print("[PNGInfo Dict]")
             pnginfo_dict = Capture.gen_pnginfo_dict(inputs)
             if len(images) >= 2:
                 pnginfo_dict["Batch index"] = index
                 pnginfo_dict["Batch size"] = len(images)
-            print("[PNGInfo Dict]")
             print(pnginfo_dict)
 
             metadata = None

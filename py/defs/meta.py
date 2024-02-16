@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import IntEnum
 
 
-class MetaField(Enum):
+class MetaField(IntEnum):
     MODEL_NAME = 0
     MODEL_HASH = 1
     POSITIVE_PROMPT = 10
