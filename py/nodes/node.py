@@ -50,7 +50,7 @@ class SaveImageWithMetaData(BaseNode):
         )
         results = list()
         print("Save Image With Metadata")
-        for image in images:
+        for index, image in enumerate(images):
             i = 255.0 * image.cpu().numpy()
             img = Image.fromarray(np.clip(i, 0, 255).astype(np.uint8))
 
@@ -58,6 +58,9 @@ class SaveImageWithMetaData(BaseNode):
             print("[get_inputs]")
             print(inputs)
             pnginfo_dict = Capture.gen_pnginfo_dict(inputs)
+            if len(images) >= 2:
+                pnginfo_dict["Batch index"] = index
+                pnginfo_dict["Batch size"] = len(images)
             print("[PNGInfo Dict]")
             print(pnginfo_dict)
 
