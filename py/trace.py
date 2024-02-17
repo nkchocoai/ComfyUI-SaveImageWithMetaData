@@ -1,5 +1,3 @@
-import json
-
 from collections import deque
 
 from .defs.samplers import SAMPLERS

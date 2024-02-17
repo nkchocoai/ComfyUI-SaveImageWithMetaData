@@ -21,6 +21,10 @@ def calc_model_hash(model_name, input_data):
     return model_hash
 
 
+def convert_skip_clip(stop_at_clip_layer, input_data):
+    return stop_at_clip_layer * -1
+
+
 def get_scaled_width(scaled_by, input_data):
     samples = input_data["samples"][0]["samples"]
     return round(samples.shape[3] * scaled_by * 8)

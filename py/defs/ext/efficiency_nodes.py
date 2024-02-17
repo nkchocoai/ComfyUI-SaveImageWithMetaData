@@ -1,6 +1,6 @@
 # https://github.com/jags111/efficiency-nodes-comfyui
 from ..meta import MetaField
-from ..formatters import calc_model_hash
+from ..formatters import calc_model_hash, convert_skip_clip
 
 SAMPLERS = {
     "KSampler (Efficient)": {
@@ -21,6 +21,7 @@ CAPTURE_FIELD_LIST = {
     "Efficient Loader": {
         MetaField.MODEL_NAME: {"field_name": "ckpt_name"},
         MetaField.MODEL_HASH: {"field_name": "ckpt_name", "format": calc_model_hash},
+        MetaField.CLIP_SKIP: {"field_name": "clip_skip", "format": convert_skip_clip},
         MetaField.POSITIVE_PROMPT: {"field_name": "positive"},
         MetaField.NEGATIVE_PROMPT: {"field_name": "negative"},
         MetaField.IMAGE_WIDTH: {"field_name": "empty_latent_width"},
@@ -31,6 +32,10 @@ CAPTURE_FIELD_LIST = {
         MetaField.MODEL_HASH: {
             "field_name": "base_ckpt_name",
             "format": calc_model_hash,
+        },
+        MetaField.CLIP_SKIP: {
+            "field_name": "base_clip_skip",
+            "format": convert_skip_clip,
         },
         MetaField.POSITIVE_PROMPT: {"field_name": "positive"},
         MetaField.NEGATIVE_PROMPT: {"field_name": "negative"},

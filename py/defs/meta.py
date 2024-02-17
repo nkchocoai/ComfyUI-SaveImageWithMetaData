@@ -6,6 +6,7 @@ class MetaField(IntEnum):
     MODEL_HASH = 1
     POSITIVE_PROMPT = 10
     NEGATIVE_PROMPT = 11
+    CLIP_SKIP = 12
     SEED = 20
     STEPS = 21
     CFG = 22

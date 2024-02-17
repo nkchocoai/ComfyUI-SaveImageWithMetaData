@@ -55,6 +55,7 @@ class Capture:
 
         update_pnginfo_dict(MetaField.POSITIVE_PROMPT, "Positive prompt")
         update_pnginfo_dict(MetaField.NEGATIVE_PROMPT, "Negative prompt")
+
         update_pnginfo_dict(MetaField.STEPS, "Steps")
 
         sampler_names = inputs.get(MetaField.SAMPLER_NAME, [])
@@ -70,12 +71,14 @@ class Capture:
         update_pnginfo_dict(MetaField.CFG, "CFG Scale")
         update_pnginfo_dict(MetaField.SEED, "Seed")
 
+        update_pnginfo_dict(MetaField.CLIP_SKIP, "Clip skip")
+
         image_widths = inputs.get(MetaField.IMAGE_WIDTH, [])
         image_heights = inputs.get(MetaField.IMAGE_HEIGHT, [])
         if len(image_widths) > 0 and len(image_heights) > 0:
             pnginfo_dict["Size"] = f"{image_widths[0][1]}x{image_heights[0][1]}"
 
-        update_pnginfo_dict(MetaField.MODEL_NAME, "Model name")
+        update_pnginfo_dict(MetaField.MODEL_NAME, "Model")
         update_pnginfo_dict(MetaField.MODEL_HASH, "Model hash")
 
         return pnginfo_dict
