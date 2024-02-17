@@ -1,0 +1,1028 @@
+{
+    "last_node_id": 28,
+    "last_link_id": 40,
+    "nodes": [
+        {
+            "id": 10,
+            "type": "KSampler",
+            "pos": [
+                1090,
+                640
+            ],
+            "size": {
+                "0": 315,
+                "1": 262
+            },
+            "flags": {},
+            "order": 14,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "model",
+                    "type": "MODEL",
+                    "link": null,
+                    "slot_index": 0
+                },
+                {
+                    "name": "positive",
+                    "type": "CONDITIONING",
+                    "link": null
+                },
+                {
+                    "name": "negative",
+                    "type": "CONDITIONING",
+                    "link": null,
+                    "slot_index": 2
+                },
+                {
+                    "name": "latent_image",
+                    "type": "LATENT",
+                    "link": 26
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "LATENT",
+                    "type": "LATENT",
+                    "links": [
+                        18
+                    ],
+                    "shape": 3
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "KSampler"
+            },
+            "widgets_values": [
+                67890,
+                "fixed",
+                15,
+                7,
+                "euler_ancestral",
+                "normal",
+                0.5
+            ]
+        },
+        {
+            "id": 8,
+            "type": "VAEDecode",
+            "pos": [
+                1470,
+                650
+            ],
+            "size": {
+                "0": 210,
+                "1": 46
+            },
+            "flags": {},
+            "order": 17,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "samples",
+                    "type": "LATENT",
+                    "link": 18,
+                    "slot_index": 0
+                },
+                {
+                    "name": "vae",
+                    "type": "VAE",
+                    "link": null,
+                    "slot_index": 1
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "IMAGE",
+                    "type": "IMAGE",
+                    "links": [
+                        11,
+                        19,
+                        20
+                    ],
+                    "shape": 3,
+                    "slot_index": 0
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "VAEDecode"
+            }
+        },
+        {
+            "id": 16,
+            "type": "VAEDecode",
+            "pos": [
+                1470,
+                170
+            ],
+            "size": {
+                "0": 210,
+                "1": 46
+            },
+            "flags": {},
+            "order": 12,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "samples",
+                    "type": "LATENT",
+                    "link": 21,
+                    "slot_index": 0
+                },
+                {
+                    "name": "vae",
+                    "type": "VAE",
+                    "link": null,
+                    "slot_index": 1
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "IMAGE",
+                    "type": "IMAGE",
+                    "links": [
+                        23
+                    ],
+                    "shape": 3,
+                    "slot_index": 0
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "VAEDecode"
+            }
+        },
+        {
+            "id": 17,
+            "type": "PreviewImage",
+            "pos": [
+                1750,
+                170
+            ],
+            "size": {
+                "0": 210,
+                "1": 246
+            },
+            "flags": {},
+            "order": 15,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "images",
+                    "type": "IMAGE",
+                    "link": 23,
+                    "slot_index": 0
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "PreviewImage"
+            }
+        },
+        {
+            "id": 14,
+            "type": "SaveImage",
+            "pos": [
+                1740,
+                570
+            ],
+            "size": {
+                "0": 263.2173767089844,
+                "1": 273.5193786621094
+            },
+            "flags": {},
+            "order": 19,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "images",
+                    "type": "IMAGE",
+                    "link": 19
+                }
+            ],
+            "properties": {},
+            "widgets_values": [
+                "ComfyUI-without-meta"
+            ]
+        },
+        {
+            "id": 11,
+            "type": "LatentUpscaleBy",
+            "pos": [
+                1110,
+                480
+            ],
+            "size": {
+                "0": 263.09246826171875,
+                "1": 82
+            },
+            "flags": {},
+            "order": 11,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "samples",
+                    "type": "LATENT",
+                    "link": 13
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "LATENT",
+                    "type": "LATENT",
+                    "links": [
+                        26
+                    ],
+                    "shape": 3,
+                    "slot_index": 0
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "LatentUpscaleBy"
+            },
+            "widgets_values": [
+                "nearest-exact",
+                1.5
+            ]
+        },
+        {
+            "id": 22,
+            "type": "PromptUtilitiesConstString",
+            "pos": [
+                21,
+                204
+            ],
+            "size": [
+                210,
+                58
+            ],
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "outputs": [
+                {
+                    "name": "STRING",
+                    "type": "STRING",
+                    "links": [
+                        29
+                    ],
+                    "shape": 3
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "PromptUtilitiesConstString"
+            },
+            "widgets_values": [
+                "1girl"
+            ]
+        },
+        {
+            "id": 23,
+            "type": "PromptUtilitiesConstStringMultiLine",
+            "pos": [
+                23,
+                313
+            ],
+            "size": [
+                210,
+                93.83313587283294
+            ],
+            "flags": {},
+            "order": 1,
+            "mode": 0,
+            "outputs": [
+                {
+                    "name": "STRING",
+                    "type": "STRING",
+                    "links": [
+                        30
+                    ],
+                    "shape": 3,
+                    "slot_index": 0
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "PromptUtilitiesConstStringMultiLine"
+            },
+            "widgets_values": [
+                "hatsune miku, vocaloid"
+            ]
+        },
+        {
+            "id": 25,
+            "type": "PromptUtilitiesLoadPreset",
+            "pos": [
+                31,
+                614
+            ],
+            "size": [
+                306.86521218039763,
+                58
+            ],
+            "flags": {},
+            "order": 2,
+            "mode": 0,
+            "outputs": [
+                {
+                    "name": "STRING",
+                    "type": "STRING",
+                    "links": [
+                        32
+                    ],
+                    "shape": 3,
+                    "slot_index": 0
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "PromptUtilitiesLoadPreset"
+            },
+            "widgets_values": [
+                "sample\\animagineXL : pos postfix"
+            ]
+        },
+        {
+            "id": 26,
+            "type": "PromptUtilitiesJoinStringList",
+            "pos": [
+                289,
+                385
+            ],
+            "size": {
+                "0": 210,
+                "1": 138
+            },
+            "flags": {},
+            "order": 10,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "arg1",
+                    "type": "STRING",
+                    "link": 29,
+                    "widget": {
+                        "name": "arg1"
+                    },
+                    "slot_index": 0
+                },
+                {
+                    "name": "arg2",
+                    "type": "STRING",
+                    "link": 30
+                },
+                {
+                    "name": "arg3",
+                    "type": "STRING",
+                    "link": 31,
+                    "slot_index": 2
+                },
+                {
+                    "name": "arg4",
+                    "type": "STRING",
+                    "link": 32
+                },
+                {
+                    "name": "arg5",
+                    "type": "STRING",
+                    "link": null
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "STRING",
+                    "type": "STRING",
+                    "links": [
+                        33
+                    ],
+                    "shape": 3,
+                    "slot_index": 0
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "PromptUtilitiesJoinStringList"
+            },
+            "widgets_values": [
+                ", ",
+                ""
+            ]
+        },
+        {
+            "id": 4,
+            "type": "KSampler",
+            "pos": [
+                1080,
+                170
+            ],
+            "size": {
+                "0": 315,
+                "1": 262
+            },
+            "flags": {},
+            "order": 9,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "model",
+                    "type": "MODEL",
+                    "link": null
+                },
+                {
+                    "name": "positive",
+                    "type": "CONDITIONING",
+                    "link": null
+                },
+                {
+                    "name": "negative",
+                    "type": "CONDITIONING",
+                    "link": null,
+                    "slot_index": 2
+                },
+                {
+                    "name": "latent_image",
+                    "type": "LATENT",
+                    "link": 28
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "LATENT",
+                    "type": "LATENT",
+                    "links": [
+                        13,
+                        21
+                    ],
+                    "shape": 3,
+                    "slot_index": 0
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "KSampler"
+            },
+            "widgets_values": [
+                12345,
+                "fixed",
+                20,
+                8,
+                "euler_ancestral",
+                "normal",
+                1
+            ]
+        },
+        {
+            "id": 1,
+            "type": "CheckpointLoaderSimple",
+            "pos": [
+                19,
+                37
+            ],
+            "size": {
+                "0": 315,
+                "1": 98
+            },
+            "flags": {},
+            "order": 3,
+            "mode": 0,
+            "outputs": [
+                {
+                    "name": "MODEL",
+                    "type": "MODEL",
+                    "links": [
+                        34
+                    ],
+                    "shape": 3,
+                    "slot_index": 0
+                },
+                {
+                    "name": "CLIP",
+                    "type": "CLIP",
+                    "links": [
+                        37
+                    ],
+                    "shape": 3
+                },
+                {
+                    "name": "VAE",
+                    "type": "VAE",
+                    "links": [
+                        38
+                    ],
+                    "shape": 3,
+                    "slot_index": 2
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "CheckpointLoaderSimple"
+            },
+            "widgets_values": [
+                "animagine-xl-3.0.safetensors"
+            ]
+        },
+        {
+            "id": 20,
+            "type": "PromptUtilitiesLoadPreset",
+            "pos": [
+                35,
+                733
+            ],
+            "size": [
+                270.42571113523366,
+                58
+            ],
+            "flags": {},
+            "order": 4,
+            "mode": 0,
+            "outputs": [
+                {
+                    "name": "STRING",
+                    "type": "STRING",
+                    "links": [
+                        27
+                    ],
+                    "shape": 3,
+                    "slot_index": 0
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "PromptUtilitiesLoadPreset"
+            },
+            "widgets_values": [
+                "sample\\animagineXL : neg"
+            ]
+        },
+        {
+            "id": 3,
+            "type": "CLIPTextEncode",
+            "pos": [
+                355,
+                739
+            ],
+            "size": {
+                "0": 210,
+                "1": 54
+            },
+            "flags": {},
+            "order": 8,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "clip",
+                    "type": "CLIP",
+                    "link": null,
+                    "slot_index": 0
+                },
+                {
+                    "name": "text",
+                    "type": "STRING",
+                    "link": 27,
+                    "widget": {
+                        "name": "text"
+                    }
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "CONDITIONING",
+                    "type": "CONDITIONING",
+                    "links": [
+                        40
+                    ],
+                    "shape": 3
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "CLIPTextEncode"
+            },
+            "widgets_values": [
+                "lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name"
+            ]
+        },
+        {
+            "id": 2,
+            "type": "CLIPTextEncode",
+            "pos": [
+                552,
+                365
+            ],
+            "size": {
+                "0": 210,
+                "1": 54
+            },
+            "flags": {},
+            "order": 13,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "clip",
+                    "type": "CLIP",
+                    "link": null,
+                    "slot_index": 0
+                },
+                {
+                    "name": "text",
+                    "type": "STRING",
+                    "link": 33,
+                    "widget": {
+                        "name": "text"
+                    }
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "CONDITIONING",
+                    "type": "CONDITIONING",
+                    "links": [
+                        39
+                    ],
+                    "shape": 3,
+                    "slot_index": 0
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "CLIPTextEncode"
+            },
+            "widgets_values": [
+                "1girl, hatsune miku, vocaloid, upper body, smile, waving, looking at viewer, masterpiece, best quality"
+            ]
+        },
+        {
+            "id": 28,
+            "type": "Prompts Everywhere",
+            "pos": [
+                809,
+                485
+            ],
+            "size": {
+                "0": 210,
+                "1": 46
+            },
+            "flags": {},
+            "order": 16,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "CONDITIONING",
+                    "type": "*",
+                    "link": 39,
+                    "slot_index": 0,
+                    "color_on": "#FFA931"
+                },
+                {
+                    "name": "CONDITIONING",
+                    "type": "*",
+                    "link": 40,
+                    "slot_index": 1,
+                    "color_on": "#FFA931"
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "Prompts Everywhere",
+                "group_restricted": false,
+                "color_restricted": false
+            }
+        },
+        {
+            "id": 15,
+            "type": "SaveImageWithMetaData",
+            "pos": [
+                2384,
+                577
+            ],
+            "size": {
+                "0": 315,
+                "1": 318
+            },
+            "flags": {},
+            "order": 20,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "images",
+                    "type": "IMAGE",
+                    "link": 20,
+                    "slot_index": 0
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "SaveImageWithMetaData"
+            },
+            "widgets_values": [
+                "ComfyUI-with-meta-near",
+                "Nearest",
+                0
+            ]
+        },
+        {
+            "id": 21,
+            "type": "EmptyLatentImageFromPresetsSDXL",
+            "pos": [
+                675,
+                161
+            ],
+            "size": {
+                "0": 315,
+                "1": 122
+            },
+            "flags": {},
+            "order": 5,
+            "mode": 0,
+            "outputs": [
+                {
+                    "name": "latent",
+                    "type": "LATENT",
+                    "links": [
+                        28
+                    ],
+                    "shape": 3,
+                    "slot_index": 0
+                },
+                {
+                    "name": "w",
+                    "type": "INT",
+                    "links": null,
+                    "shape": 3
+                },
+                {
+                    "name": "h",
+                    "type": "INT",
+                    "links": null,
+                    "shape": 3
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "EmptyLatentImageFromPresetsSDXL"
+            },
+            "widgets_values": [
+                " 832 x 1216",
+                1
+            ]
+        },
+        {
+            "id": 24,
+            "type": "PromptUtilitiesConstStringMultiLine",
+            "pos": [
+                26,
+                458
+            ],
+            "size": {
+                "0": 210,
+                "1": 93.83313751220703
+            },
+            "flags": {},
+            "order": 6,
+            "mode": 0,
+            "outputs": [
+                {
+                    "name": "STRING",
+                    "type": "STRING",
+                    "links": [
+                        31
+                    ],
+                    "shape": 3
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "PromptUtilitiesConstStringMultiLine"
+            },
+            "widgets_values": [
+                "upper body, v sign, smile, looking at viewer"
+            ]
+        },
+        {
+            "id": 9,
+            "type": "SaveImageWithMetaData",
+            "pos": [
+                2029,
+                572
+            ],
+            "size": [
+                307.9046630859375,
+                317.66292780095876
+            ],
+            "flags": {},
+            "order": 18,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "images",
+                    "type": "IMAGE",
+                    "link": 11,
+                    "slot_index": 0
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "SaveImageWithMetaData"
+            },
+            "widgets_values": [
+                "ComfyUI-with-meta-far",
+                "Farthest",
+                0
+            ]
+        },
+        {
+            "id": 27,
+            "type": "Anything Everywhere3",
+            "pos": [
+                400,
+                37
+            ],
+            "size": {
+                "0": 210,
+                "1": 66
+            },
+            "flags": {},
+            "order": 7,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "MODEL",
+                    "type": "*",
+                    "link": 34,
+                    "slot_index": 0,
+                    "color_on": "#B39DDB"
+                },
+                {
+                    "name": "CLIP",
+                    "type": "*",
+                    "link": 37,
+                    "color_on": "#FFD500",
+                    "slot_index": 1
+                },
+                {
+                    "name": "VAE",
+                    "type": "*",
+                    "link": 38,
+                    "slot_index": 2,
+                    "color_on": "#FF6E6E"
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "Anything Everywhere3",
+                "group_restricted": false,
+                "color_restricted": false
+            }
+        }
+    ],
+    "links": [
+        [
+            11,
+            8,
+            0,
+            9,
+            0,
+            "IMAGE"
+        ],
+        [
+            13,
+            4,
+            0,
+            11,
+            0,
+            "LATENT"
+        ],
+        [
+            18,
+            10,
+            0,
+            8,
+            0,
+            "LATENT"
+        ],
+        [
+            19,
+            8,
+            0,
+            14,
+            0,
+            "IMAGE"
+        ],
+        [
+            20,
+            8,
+            0,
+            15,
+            0,
+            "IMAGE"
+        ],
+        [
+            21,
+            4,
+            0,
+            16,
+            0,
+            "LATENT"
+        ],
+        [
+            23,
+            16,
+            0,
+            17,
+            0,
+            "IMAGE"
+        ],
+        [
+            26,
+            11,
+            0,
+            10,
+            3,
+            "LATENT"
+        ],
+        [
+            27,
+            20,
+            0,
+            3,
+            1,
+            "STRING"
+        ],
+        [
+            28,
+            21,
+            0,
+            4,
+            3,
+            "LATENT"
+        ],
+        [
+            29,
+            22,
+            0,
+            26,
+            0,
+            "STRING"
+        ],
+        [
+            30,
+            23,
+            0,
+            26,
+            1,
+            "STRING"
+        ],
+        [
+            31,
+            24,
+            0,
+            26,
+            2,
+            "STRING"
+        ],
+        [
+            32,
+            25,
+            0,
+            26,
+            3,
+            "STRING"
+        ],
+        [
+            33,
+            26,
+            0,
+            2,
+            1,
+            "STRING"
+        ],
+        [
+            34,
+            1,
+            0,
+            27,
+            0,
+            "*"
+        ],
+        [
+            37,
+            1,
+            1,
+            27,
+            1,
+            "*"
+        ],
+        [
+            38,
+            1,
+            2,
+            27,
+            2,
+            "*"
+        ],
+        [
+            39,
+            2,
+            0,
+            28,
+            0,
+            "*"
+        ],
+        [
+            40,
+            3,
+            0,
+            28,
+            1,
+            "*"
+        ]
+    ],
+    "groups": [],
+    "config": {},
+    "extra": {},
+    "version": 0.4
+}
