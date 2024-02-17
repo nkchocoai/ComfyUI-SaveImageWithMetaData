@@ -3,7 +3,7 @@
 日本語版READMEは[こちら](README.jp.md)。
 
 - Custom node for [ComfyUI](https://github.com/comfyanonymous/ComfyUI).
-- Add a node to store images with metadata (PNGInfo) extracted from the input values of each node.
+- Add a node to save images with metadata (PNGInfo) extracted from the input values of each node.
 - Since the values are extracted dynamically, values output by various extension nodes can be added to metadata.
 
 ## Installation
