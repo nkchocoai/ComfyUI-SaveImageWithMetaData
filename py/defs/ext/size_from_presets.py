@@ -1,3 +1,4 @@
+# https://github.com/nkchocoai/ComfyUI-SizeFromPresets/
 from ..meta import MetaField
 
 
