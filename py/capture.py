@@ -18,7 +18,7 @@ class Capture:
             class_type = obj["class_type"]
             obj_class = NODE_CLASS_MAPPINGS[class_type]
             node_inputs = prompt[node_id]["inputs"]
-            input_data_all = get_input_data(
+            input_data = get_input_data(
                 node_inputs, obj_class, node_id, outputs, prompt, extra_data
             )
             for node_class, metas in CAPTURE_FIELD_LIST.items():
@@ -26,7 +26,7 @@ class Capture:
                     for meta, field_data in metas.items():
                         validate = field_data.get("validate")
                         if validate is not None and not validate(
-                            node_id, obj, prompt, extra_data, outputs, input_data_all
+                            node_id, obj, prompt, extra_data, outputs, input_data
                         ):
                             print("validate failed", meta, node_id, obj)
                             continue
@@ -34,14 +34,14 @@ class Capture:
                         if meta not in inputs:
                             inputs[meta] = []
                         field_name = field_data["field_name"]
-                        value = input_data_all.get(field_name)
+                        value = input_data.get(field_name)
                         if value is not None:
                             format = field_data.get("format")
                             v = value
                             if isinstance(value, list) and len(value) > 0:
                                 v = value[0]
                             if format is not None:
-                                v = format(v)
+                                v = format(v, input_data)
                             inputs[meta].append((node_id, v))
         return inputs
 

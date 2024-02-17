@@ -5,7 +5,7 @@ import folder_paths
 cache_model_hash = {}
 
 
-def calc_model_hash(model_name):
+def calc_model_hash(model_name, input_data):
     if model_name in cache_model_hash:
         return cache_model_hash[model_name]
 
@@ -19,3 +19,13 @@ def calc_model_hash(model_name):
 
     cache_model_hash[model_name] = model_hash
     return model_hash
+
+
+def get_scaled_width(scaled_by, input_data):
+    samples = input_data["samples"][0]["samples"]
+    return round(samples.shape[3] * scaled_by * 8)
+
+
+def get_scaled_height(scaled_by, input_data):
+    samples = input_data["samples"][0]["samples"]
+    return round(samples.shape[2] * scaled_by * 8)

@@ -69,7 +69,7 @@ class SaveImageWithMetaData(BaseNode):
             i = 255.0 * image.cpu().numpy()
             img = Image.fromarray(np.clip(i, 0, 255).astype(np.uint8))
 
-            pnginfo_dict = self.gen_pnginfo()
+            pnginfo_dict = self.gen_pnginfo(sampler_find_method, sampler_find_node_id)
             if len(images) >= 2:
                 pnginfo_dict["Batch index"] = index
                 pnginfo_dict["Batch size"] = len(images)
@@ -101,7 +101,7 @@ class SaveImageWithMetaData(BaseNode):
         return {"ui": {"images": results}}
 
     @classmethod
-    def gen_pnginfo(cls):
+    def gen_pnginfo(cls, sampler_find_method, sampler_find_node_id):
         # get all node inputs
         inputs = Capture.get_inputs()
 
@@ -118,6 +118,7 @@ class SaveImageWithMetaData(BaseNode):
         filtered_inputs = Trace.filter_inputs_by_trace_tree(
             inputs, trace_tree_from_sampler_node
         )
+        print(filtered_inputs)
 
         # generate PNGInfo from inputs
         pnginfo_dict = Capture.gen_pnginfo_dict(filtered_inputs)

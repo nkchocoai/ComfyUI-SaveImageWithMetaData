@@ -1,11 +1,11 @@
 from ..meta import MetaField
 
 
-def get_width(preset):
+def get_width(preset, input_data):
     return preset.split("x")[0].strip()
 
 
-def get_height(preset):
+def get_height(preset, input_data):
     return preset.split("x")[1].strip()
 
 

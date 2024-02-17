@@ -1,6 +1,6 @@
 from .meta import MetaField
 from .validators import is_positive_prompt, is_negative_prompt
-from .formatters import calc_model_hash
+from .formatters import calc_model_hash, get_scaled_width, get_scaled_height
 
 
 CAPTURE_FIELD_LIST = {
@@ -35,5 +35,16 @@ CAPTURE_FIELD_LIST = {
         MetaField.CFG: {"field_name": "cfg"},
         MetaField.SAMPLER_NAME: {"field_name": "sampler_name"},
         MetaField.SCHEDULER: {"field_name": "scheduler"},
+    },
+    "LatentUpscale": {
+        MetaField.IMAGE_WIDTH: {"field_name": "width"},
+        MetaField.IMAGE_HEIGHT: {"field_name": "height"},
+    },
+    "LatentUpscaleBy": {
+        MetaField.IMAGE_WIDTH: {"field_name": "scale_by", "format": get_scaled_width},
+        MetaField.IMAGE_HEIGHT: {
+            "field_name": "scale_by",
+            "format": get_scaled_height,
+        },
     },
 }
