@@ -28,7 +28,6 @@ class Capture:
                         if validate is not None and not validate(
                             node_id, obj, prompt, extra_data, outputs, input_data
                         ):
-                            print("validate failed", meta, node_id, obj)
                             continue
 
                         if meta not in inputs:

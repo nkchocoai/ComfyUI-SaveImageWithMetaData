@@ -64,7 +64,6 @@ class SaveImageWithMetaData(BaseNode):
             filename_prefix, self.output_dir, images[0].shape[1], images[0].shape[0]
         )
         results = list()
-        print("Save Image With Metadata")
         for index, image in enumerate(images):
             i = 255.0 * image.cpu().numpy()
             img = Image.fromarray(np.clip(i, 0, 255).astype(np.uint8))
@@ -118,7 +117,6 @@ class SaveImageWithMetaData(BaseNode):
         filtered_inputs = Trace.filter_inputs_by_trace_tree(
             inputs, trace_tree_from_sampler_node
         )
-        print(filtered_inputs)
 
         # generate PNGInfo from inputs
         pnginfo_dict = Capture.gen_pnginfo_dict(filtered_inputs)
