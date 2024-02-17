@@ -32,7 +32,7 @@ class SaveImageWithMetaData(BaseNode):
                 "images": ("IMAGE",),
                 "filename_prefix": ("STRING", {"default": "ComfyUI"}),
                 "sampler_selection_method": (SAMPLER_SELECTION_METHOD,),
-                "sampler_find_node_id": (
+                "sampler_selection_node_id": (
                     "INT",
                     {"default": 0, "min": 0, "max": 999999999, "step": 1},
                 ),
@@ -50,7 +50,7 @@ class SaveImageWithMetaData(BaseNode):
         images,
         filename_prefix="ComfyUI",
         sampler_selection_method=SAMPLER_SELECTION_METHOD[0],
-        sampler_find_node_id=0,
+        sampler_selection_node_id=0,
         prompt=None,
         extra_pnginfo=None,
     ):
@@ -69,7 +69,7 @@ class SaveImageWithMetaData(BaseNode):
             img = Image.fromarray(np.clip(i, 0, 255).astype(np.uint8))
 
             pnginfo_dict = self.gen_pnginfo(
-                sampler_selection_method, sampler_find_node_id
+                sampler_selection_method, sampler_selection_node_id
             )
             if len(images) >= 2:
                 pnginfo_dict["Batch index"] = index
@@ -102,7 +102,7 @@ class SaveImageWithMetaData(BaseNode):
         return {"ui": {"images": results}}
 
     @classmethod
-    def gen_pnginfo(cls, sampler_selection_method, sampler_find_node_id):
+    def gen_pnginfo(cls, sampler_selection_method, sampler_selection_node_id):
         # get all node inputs
         inputs = Capture.get_inputs()
 
@@ -111,7 +111,9 @@ class SaveImageWithMetaData(BaseNode):
             hook.current_node_id, hook.current_prompt
         )
         sampler_node_id = Trace.find_sampler_node_id(
-            trace_tree_from_this_node, sampler_selection_method, sampler_find_node_id
+            trace_tree_from_this_node,
+            sampler_selection_method,
+            sampler_selection_node_id,
         )
 
         # get inputs before sampler node
