@@ -30,7 +30,7 @@ CAPTURE_FIELD_LIST = {
         MetaField.SCHEDULER: {"field_name": "scheduler"},
     },
     "KSamplerAdvanced": {
-        MetaField.SEED: {"field_name": "seed"},
+        MetaField.SEED: {"field_name": "noise_seed"},
         MetaField.STEPS: {"field_name": "steps"},
         MetaField.CFG: {"field_name": "cfg"},
         MetaField.SAMPLER_NAME: {"field_name": "sampler_name"},
