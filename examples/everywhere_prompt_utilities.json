@@ -178,32 +178,6 @@
             }
         },
         {
-            "id": 14,
-            "type": "SaveImage",
-            "pos": [
-                1740,
-                570
-            ],
-            "size": {
-                "0": 263.2173767089844,
-                "1": 273.5193786621094
-            },
-            "flags": {},
-            "order": 19,
-            "mode": 0,
-            "inputs": [
-                {
-                    "name": "images",
-                    "type": "IMAGE",
-                    "link": 19
-                }
-            ],
-            "properties": {},
-            "widgets_values": [
-                "ComfyUI-without-meta"
-            ]
-        },
-        {
             "id": 11,
             "type": "LatentUpscaleBy",
             "pos": [
@@ -250,10 +224,10 @@
                 21,
                 204
             ],
-            "size": [
-                210,
-                58
-            ],
+            "size": {
+                "0": 210,
+                "1": 58
+            },
             "flags": {},
             "order": 0,
             "mode": 0,
@@ -281,10 +255,10 @@
                 23,
                 313
             ],
-            "size": [
-                210,
-                93.83313587283294
-            ],
+            "size": {
+                "0": 210,
+                "1": 93.83313751220703
+            },
             "flags": {},
             "order": 1,
             "mode": 0,
@@ -313,10 +287,10 @@
                 31,
                 614
             ],
-            "size": [
-                306.86521218039763,
-                58
-            ],
+            "size": {
+                "0": 306.8652038574219,
+                "1": 58
+            },
             "flags": {},
             "order": 2,
             "mode": 0,
@@ -521,10 +495,10 @@
                 35,
                 733
             ],
-            "size": [
-                270.42571113523366,
-                58
-            ],
+            "size": {
+                "0": 270.42572021484375,
+                "1": 58
+            },
             "flags": {},
             "order": 4,
             "mode": 0,
@@ -672,9 +646,9 @@
                 }
             ],
             "properties": {
-                "Node name for S&R": "Prompts Everywhere",
                 "group_restricted": false,
-                "color_restricted": false
+                "color_restricted": false,
+                "Node name for S&R": "Prompts Everywhere"
             }
         },
         {
@@ -716,7 +690,7 @@
                 161
             ],
             "size": {
-                "0": 315,
+                "0": 319.20001220703125,
                 "1": 122
             },
             "flags": {},
@@ -785,37 +759,6 @@
             ]
         },
         {
-            "id": 9,
-            "type": "SaveImageWithMetaData",
-            "pos": [
-                2029,
-                572
-            ],
-            "size": [
-                307.9046630859375,
-                317.66292780095876
-            ],
-            "flags": {},
-            "order": 18,
-            "mode": 0,
-            "inputs": [
-                {
-                    "name": "images",
-                    "type": "IMAGE",
-                    "link": 11,
-                    "slot_index": 0
-                }
-            ],
-            "properties": {
-                "Node name for S&R": "SaveImageWithMetaData"
-            },
-            "widgets_values": [
-                "ComfyUI-with-meta-far",
-                "Farthest",
-                0
-            ]
-        },
-        {
             "id": 27,
             "type": "Anything Everywhere3",
             "pos": [
@@ -853,10 +796,67 @@
                 }
             ],
             "properties": {
-                "Node name for S&R": "Anything Everywhere3",
                 "group_restricted": false,
-                "color_restricted": false
+                "color_restricted": false,
+                "Node name for S&R": "Anything Everywhere3"
             }
+        },
+        {
+            "id": 9,
+            "type": "SaveImageWithMetaData",
+            "pos": [
+                2029,
+                572
+            ],
+            "size": [
+                307.9046630859375,
+                318
+            ],
+            "flags": {},
+            "order": 18,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "images",
+                    "type": "IMAGE",
+                    "link": 11,
+                    "slot_index": 0
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "SaveImageWithMetaData"
+            },
+            "widgets_values": [
+                "ComfyUI-with-meta-far",
+                "Farthest",
+                0
+            ]
+        },
+        {
+            "id": 14,
+            "type": "SaveImage",
+            "pos": [
+                1740,
+                570
+            ],
+            "size": {
+                "0": 263.2173767089844,
+                "1": 273.5193786621094
+            },
+            "flags": {},
+            "order": 19,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "images",
+                    "type": "IMAGE",
+                    "link": 19
+                }
+            ],
+            "properties": {},
+            "widgets_values": [
+                "ComfyUI-without-meta"
+            ]
         }
     ],
     "links": [

@@ -3,7 +3,7 @@ import json
 from collections import deque
 
 from .defs.samplers import SAMPLERS
-from .defs.combo import SAMPLER_FIND_METHOD
+from .defs.combo import SAMPLER_SELECTION_METHOD
 
 
 class Trace:
@@ -25,8 +25,8 @@ class Trace:
         return trace_tree
 
     @classmethod
-    def find_sampler_node_id(cls, trace_tree, sampler_find_method, node_id):
-        if sampler_find_method == SAMPLER_FIND_METHOD[2]:
+    def find_sampler_node_id(cls, trace_tree, sampler_selection_method, node_id):
+        if sampler_selection_method == SAMPLER_SELECTION_METHOD[2]:
             node_id = str(node_id)
             _, class_type = trace_tree.get(node_id, (-1, None))
             if class_type in SAMPLERS.keys():
@@ -36,7 +36,7 @@ class Trace:
         sorted_by_distance_trace_tree = sorted(
             [(k, v[0], v[1]) for k, v in trace_tree.items()],
             key=lambda x: x[1],
-            reverse=(sampler_find_method == SAMPLER_FIND_METHOD[0]),
+            reverse=(sampler_selection_method == SAMPLER_SELECTION_METHOD[0]),
         )
         for nid, _, class_type in sorted_by_distance_trace_tree:
             if class_type in SAMPLERS.keys():

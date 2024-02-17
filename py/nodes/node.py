@@ -14,7 +14,7 @@ from ..capture import Capture
 from .. import hook
 from ..trace import Trace
 
-from ..defs.combo import SAMPLER_FIND_METHOD
+from ..defs.combo import SAMPLER_SELECTION_METHOD
 
 
 # refer. https://github.com/comfyanonymous/ComfyUI/blob/38b7ac6e269e6ecc5bdd6fefdfb2fb1185b09c9d/nodes.py#L1411
@@ -31,7 +31,7 @@ class SaveImageWithMetaData(BaseNode):
             "required": {
                 "images": ("IMAGE",),
                 "filename_prefix": ("STRING", {"default": "ComfyUI"}),
-                "sampler_find_method": (SAMPLER_FIND_METHOD,),
+                "sampler_selection_method": (SAMPLER_SELECTION_METHOD,),
                 "sampler_find_node_id": (
                     "INT",
                     {"default": 0, "min": 0, "max": 999999999, "step": 1},
@@ -49,7 +49,7 @@ class SaveImageWithMetaData(BaseNode):
         self,
         images,
         filename_prefix="ComfyUI",
-        sampler_find_method=SAMPLER_FIND_METHOD[0],
+        sampler_selection_method=SAMPLER_SELECTION_METHOD[0],
         sampler_find_node_id=0,
         prompt=None,
         extra_pnginfo=None,
@@ -68,7 +68,9 @@ class SaveImageWithMetaData(BaseNode):
             i = 255.0 * image.cpu().numpy()
             img = Image.fromarray(np.clip(i, 0, 255).astype(np.uint8))
 
-            pnginfo_dict = self.gen_pnginfo(sampler_find_method, sampler_find_node_id)
+            pnginfo_dict = self.gen_pnginfo(
+                sampler_selection_method, sampler_find_node_id
+            )
             if len(images) >= 2:
                 pnginfo_dict["Batch index"] = index
                 pnginfo_dict["Batch size"] = len(images)
@@ -100,7 +102,7 @@ class SaveImageWithMetaData(BaseNode):
         return {"ui": {"images": results}}
 
     @classmethod
-    def gen_pnginfo(cls, sampler_find_method, sampler_find_node_id):
+    def gen_pnginfo(cls, sampler_selection_method, sampler_find_node_id):
         # get all node inputs
         inputs = Capture.get_inputs()
 
@@ -109,7 +111,7 @@ class SaveImageWithMetaData(BaseNode):
             hook.current_node_id, hook.current_prompt
         )
         sampler_node_id = Trace.find_sampler_node_id(
-            trace_tree_from_this_node, sampler_find_method, sampler_find_node_id
+            trace_tree_from_this_node, sampler_selection_method, sampler_find_node_id
         )
 
         # get inputs before sampler node

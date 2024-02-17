@@ -1,1 +1,1 @@
-SAMPLER_FIND_METHOD = ["Farthest", "Nearest", "By node ID"]
+SAMPLER_SELECTION_METHOD = ["Farthest", "Nearest", "By node ID"]
