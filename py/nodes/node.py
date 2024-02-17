@@ -11,6 +11,10 @@ from comfy.cli_args import args
 from .base import BaseNode
 
 from ..capture import Capture
+from .. import hook
+from ..trace import Trace
+
+from ..defs.combo import SAMPLER_FIND_METHOD
 
 
 # refer. https://github.com/comfyanonymous/ComfyUI/blob/38b7ac6e269e6ecc5bdd6fefdfb2fb1185b09c9d/nodes.py#L1411
@@ -27,6 +31,11 @@ class SaveImageWithMetaData(BaseNode):
             "required": {
                 "images": ("IMAGE",),
                 "filename_prefix": ("STRING", {"default": "ComfyUI"}),
+                "sampler_find_method": (SAMPLER_FIND_METHOD,),
+                "sampler_find_node_id": (
+                    "INT",
+                    {"default": 0, "min": 0, "max": 999999999, "step": 1},
+                ),
             },
             "hidden": {"prompt": "PROMPT", "extra_pnginfo": "EXTRA_PNGINFO"},
         }
@@ -37,7 +46,13 @@ class SaveImageWithMetaData(BaseNode):
     OUTPUT_NODE = True
 
     def save_images(
-        self, images, filename_prefix="ComfyUI", prompt=None, extra_pnginfo=None
+        self,
+        images,
+        filename_prefix="ComfyUI",
+        sampler_find_method=SAMPLER_FIND_METHOD[0],
+        sampler_find_node_id=0,
+        prompt=None,
+        extra_pnginfo=None,
     ):
         (
             full_output_folder,
@@ -54,16 +69,10 @@ class SaveImageWithMetaData(BaseNode):
             i = 255.0 * image.cpu().numpy()
             img = Image.fromarray(np.clip(i, 0, 255).astype(np.uint8))
 
-            inputs = Capture.get_inputs()
-            print("[get_inputs]")
-            print(inputs)
-
-            print("[PNGInfo Dict]")
-            pnginfo_dict = Capture.gen_pnginfo_dict(inputs)
+            pnginfo_dict = self.gen_pnginfo()
             if len(images) >= 2:
                 pnginfo_dict["Batch index"] = index
                 pnginfo_dict["Batch size"] = len(images)
-            print(pnginfo_dict)
 
             metadata = None
             if not args.disable_metadata:
@@ -90,3 +99,26 @@ class SaveImageWithMetaData(BaseNode):
             counter += 1
 
         return {"ui": {"images": results}}
+
+    @classmethod
+    def gen_pnginfo(cls):
+        # get all node inputs
+        inputs = Capture.get_inputs()
+
+        # get sampler node before this node
+        trace_tree_from_this_node = Trace.trace(
+            hook.current_node_id, hook.current_prompt
+        )
+        sampler_node_id = Trace.find_sampler_node_id(
+            trace_tree_from_this_node, sampler_find_method, sampler_find_node_id
+        )
+
+        # get inputs before sampler node
+        trace_tree_from_sampler_node = Trace.trace(sampler_node_id, hook.current_prompt)
+        filtered_inputs = Trace.filter_inputs_by_trace_tree(
+            inputs, trace_tree_from_sampler_node
+        )
+
+        # generate PNGInfo from inputs
+        pnginfo_dict = Capture.gen_pnginfo_dict(filtered_inputs)
+        return pnginfo_dict

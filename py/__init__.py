@@ -1,6 +1,6 @@
 import functools
 
-from .hook import pre_execute
+from .hook import pre_execute, pre_recursive_execute
 import execution
 
 
@@ -16,4 +16,9 @@ def prefix_function(function, prefunction):
 
 execution.PromptExecutor.execute = prefix_function(
     execution.PromptExecutor.execute, pre_execute
+)
+
+
+execution.recursive_execute = prefix_function(
+    execution.recursive_execute, pre_recursive_execute
 )
