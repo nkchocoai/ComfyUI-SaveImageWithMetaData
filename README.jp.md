@@ -14,6 +14,7 @@ git clone https://github.com/nkchocoai/ComfyUI-SaveImageWithMetaData.git
 ### Save Image With Metadata
 - 入力として受け取った `images` をメタデータ(PNGInfo)つきの画像として保存します。
 - メタデータは `sampler_selection_method` で見つけたKSamplerノードの入力と以前に実行されたノードの入力から取得します。
+  - 対象となるKSamplerノードは[py/defs/samplers.py](py/defs/samplers.py)と[py/defs/ext/](py/defs/ext/)配下のファイルの`SAMPLERS`のキーです。
 
 #### sampler_selection_method
 - このノードよりも前に実行されたKSamplerノードを選ぶ方法を指定します。
