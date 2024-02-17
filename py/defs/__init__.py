@@ -5,6 +5,7 @@ import os
 from .captures import CAPTURE_FIELD_LIST
 from .samplers import SAMPLERS
 
+# load CAPTURE_FIELD_LIST and SAMPLERS in ext folder
 dir_name = os.path.dirname(os.path.abspath(__file__))
 for module_path in glob.glob(dir_name + "/ext/*.py"):
     module_name = os.path.basename(module_path)
