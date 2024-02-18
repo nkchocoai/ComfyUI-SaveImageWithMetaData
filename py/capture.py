@@ -50,7 +50,11 @@ class Capture:
                                 v = value[0]
                             if format is not None:
                                 v = format(v, input_data)
-                            inputs[meta].append((node_id, v))
+                            if isinstance(v, list):
+                                for x in v:
+                                    inputs[meta].append((node_id, x))
+                            else:
+                                inputs[meta].append((node_id, v))
         return inputs
 
     @classmethod
@@ -91,6 +95,7 @@ class Capture:
         update_pnginfo_dict(MetaField.MODEL_HASH, "Model hash")
 
         pnginfo_dict.update(cls.gen_loras(inputs))
+        pnginfo_dict.update(cls.gen_embeddings(inputs))
 
         hashes_for_civitai = cls.get_hashes_for_civitai(inputs)
         if len(hashes_for_civitai) > 0:
@@ -130,6 +135,12 @@ class Capture:
             lora_model_name = os.path.splitext(os.path.basename(lora_model_name[1]))[0]
             resource_hashes[f"lora:{lora_model_name}"] = lora_model_hash[1]
 
+        embedding_names = inputs.get(MetaField.EMBEDDING_NAME, [])
+        embedding_hashes = inputs.get(MetaField.EMBEDDING_HASH, [])
+        for embedding_name, embedding_hash in zip(embedding_names, embedding_hashes):
+            embedding_name = os.path.splitext(os.path.basename(embedding_name[1]))[0]
+            resource_hashes[f"embed:{embedding_name}"] = embedding_hash[1]
+
         return resource_hashes
 
     @classmethod
@@ -150,6 +161,22 @@ class Capture:
             pnginfo_dict[f"{field_prefix} Model hash"] = model_hashe[1]
             pnginfo_dict[f"{field_prefix} Strength model"] = strength_model[1]
             pnginfo_dict[f"{field_prefix} Strength clip"] = strength_clip[1]
+            index += 1
+
+        return pnginfo_dict
+
+    @classmethod
+    def gen_embeddings(cls, inputs):
+        pnginfo_dict = {}
+
+        embedding_names = inputs.get(MetaField.EMBEDDING_NAME, [])
+        embedding_hashes = inputs.get(MetaField.EMBEDDING_HASH, [])
+
+        index = 0
+        for embedding_name, embedding_hashe in zip(embedding_names, embedding_hashes):
+            field_prefix = f"Embedding_{index}"
+            pnginfo_dict[f"{field_prefix} name"] = os.path.basename(embedding_name[1])
+            pnginfo_dict[f"{field_prefix} hash"] = embedding_hashe[1]
             index += 1
 
         return pnginfo_dict

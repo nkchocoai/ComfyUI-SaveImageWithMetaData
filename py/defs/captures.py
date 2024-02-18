@@ -6,6 +6,8 @@ from .formatters import (
     convert_skip_clip,
     get_scaled_width,
     get_scaled_height,
+    extract_embedding_names,
+    extract_embedding_hashes,
 )
 
 
@@ -32,6 +34,14 @@ CAPTURE_FIELD_LIST = {
         MetaField.NEGATIVE_PROMPT: {
             "field_name": "text",
             "validate": is_negative_prompt,
+        },
+        MetaField.EMBEDDING_NAME: {
+            "field_name": "text",
+            "format": extract_embedding_names,
+        },
+        MetaField.EMBEDDING_HASH: {
+            "field_name": "text",
+            "format": extract_embedding_hashes,
         },
     },
     "KSampler": {
