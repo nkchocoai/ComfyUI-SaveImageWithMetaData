@@ -43,9 +43,24 @@ git clone https://github.com/nkchocoai/ComfyUI-SaveImageWithMetaData.git
 - Size
 - Model
 - Model hash
+- VAE
+  - It is referenced from the input of SaveImageWithMetadata node, not KSampler node.
+- VAE hash
+  - It is referenced from the input of SaveImageWithMetadata node, not KSampler node.
+- Loras
+  - Model name
+  - Model hash
+  - Strength model
+  - Strength clip
+- Embeddings
+  - Name
+  - Hash
 - If batch size >= 2 :
   - Batch index
   - Batch size
+- Hashes
+  - Model, Loras, Embeddings
+  - For [Civitai](https://civitai.com/)
 
 ## Supported nodes and extensions
 - Please check the following file for supported nodes.

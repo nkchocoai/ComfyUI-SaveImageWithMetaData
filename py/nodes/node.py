@@ -110,6 +110,9 @@ class SaveImageWithMetaData(BaseNode):
         trace_tree_from_this_node = Trace.trace(
             hook.current_node_id, hook.current_prompt
         )
+        inputs_before_this_node = Trace.filter_inputs_by_trace_tree(
+            inputs, trace_tree_from_this_node
+        )
         sampler_node_id = Trace.find_sampler_node_id(
             trace_tree_from_this_node,
             sampler_selection_method,
@@ -118,10 +121,12 @@ class SaveImageWithMetaData(BaseNode):
 
         # get inputs before sampler node
         trace_tree_from_sampler_node = Trace.trace(sampler_node_id, hook.current_prompt)
-        filtered_inputs = Trace.filter_inputs_by_trace_tree(
+        inputs_before_sampler_node = Trace.filter_inputs_by_trace_tree(
             inputs, trace_tree_from_sampler_node
         )
 
         # generate PNGInfo from inputs
-        pnginfo_dict = Capture.gen_pnginfo_dict(filtered_inputs)
+        pnginfo_dict = Capture.gen_pnginfo_dict(
+            inputs_before_sampler_node, inputs_before_this_node
+        )
         return pnginfo_dict
