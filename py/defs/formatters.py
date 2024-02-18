@@ -6,6 +6,8 @@ from ..utils.hash import calc_hash
 from ..utils.embedding import get_embedding_file_path
 
 from comfy.sd1_clip import escape_important, token_weights, unescape_important
+from comfy.sd1_clip import SD1Tokenizer
+from comfy.sd2_clip import SD2Tokenizer
 from comfy.sdxl_clip import SDXLTokenizer
 
 cache_model_hash = {}
@@ -54,7 +56,11 @@ def extract_embedding_hashes(text, input_data):
 def _extract_embedding_names(text, input_data):
     clip = input_data["clip"][0]
     tokenizer = clip.tokenizer
-    if isinstance(tokenizer, SDXLTokenizer):
+    if isinstance(tokenizer, SD1Tokenizer):
+        tokenizer = tokenizer.clip_l
+    elif isinstance(tokenizer, SD2Tokenizer):
+        tokenizer = tokenizer.clip_h
+    elif isinstance(tokenizer, SDXLTokenizer):
         tokenizer = tokenizer.clip_l
     text = escape_important(text)
     parsed_weights = token_weights(text, 1.0)
