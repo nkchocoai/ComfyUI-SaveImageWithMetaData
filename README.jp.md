@@ -41,9 +41,24 @@ git clone https://github.com/nkchocoai/ComfyUI-SaveImageWithMetaData.git
 - Size
 - Model
 - Model hash
+- VAE
+  - KSamplerノードではなくSaveImageWithMetadataノードの入力から参照されます。
+- VAE hash
+  - KSamplerノードではなくSaveImageWithMetadataノードの入力から参照されます。
+- Loras
+  - Model name
+  - Model hash
+  - Strength model
+  - Strength clip
+- Embeddings
+  - Name
+  - Hash
 - batch size >= 2の場合 : 
   - Batch index
   - Batch size
+- Hashes
+  - Model, Loras, Embeddings
+  - [Civitai](https://civitai.com/)用
 
 ## 対応しているノード・拡張機能
 - 対応しているノードは以下のファイルをご確認ください。
