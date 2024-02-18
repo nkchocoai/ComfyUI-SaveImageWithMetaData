@@ -58,46 +58,59 @@ class Capture:
         return inputs
 
     @classmethod
-    def gen_pnginfo_dict(cls, inputs):
+    def gen_pnginfo_dict(cls, inputs_before_sampler_node, inputs_before_this_node):
         pnginfo_dict = {}
 
-        def update_pnginfo_dict(metafield, key):
+        def update_pnginfo_dict(inputs, metafield, key):
             x = inputs.get(metafield, [])
             if len(x) > 0:
                 pnginfo_dict[key] = x[0][1]
 
-        update_pnginfo_dict(MetaField.POSITIVE_PROMPT, "Positive prompt")
-        update_pnginfo_dict(MetaField.NEGATIVE_PROMPT, "Negative prompt")
+        update_pnginfo_dict(
+            inputs_before_sampler_node, MetaField.POSITIVE_PROMPT, "Positive prompt"
+        )
+        update_pnginfo_dict(
+            inputs_before_sampler_node, MetaField.NEGATIVE_PROMPT, "Negative prompt"
+        )
 
-        update_pnginfo_dict(MetaField.STEPS, "Steps")
+        update_pnginfo_dict(inputs_before_sampler_node, MetaField.STEPS, "Steps")
 
-        sampler_names = inputs.get(MetaField.SAMPLER_NAME, [])
+        sampler_names = inputs_before_sampler_node.get(MetaField.SAMPLER_NAME, [])
         if len(sampler_names) > 0:
             pnginfo_dict["Sampler"] = sampler_names[0][1]
 
-            schedulers = inputs.get(MetaField.SCHEDULER, [])
+            schedulers = inputs_before_sampler_node.get(MetaField.SCHEDULER, [])
             if len(schedulers) > 0:
                 scheduler = schedulers[0][1]
                 if scheduler != "normal":
                     pnginfo_dict["Sampler"] += "_" + scheduler
 
-        update_pnginfo_dict(MetaField.CFG, "CFG Scale")
-        update_pnginfo_dict(MetaField.SEED, "Seed")
+        update_pnginfo_dict(inputs_before_sampler_node, MetaField.CFG, "CFG Scale")
+        update_pnginfo_dict(inputs_before_sampler_node, MetaField.SEED, "Seed")
 
-        update_pnginfo_dict(MetaField.CLIP_SKIP, "Clip skip")
+        update_pnginfo_dict(
+            inputs_before_sampler_node, MetaField.CLIP_SKIP, "Clip skip"
+        )
 
-        image_widths = inputs.get(MetaField.IMAGE_WIDTH, [])
-        image_heights = inputs.get(MetaField.IMAGE_HEIGHT, [])
+        image_widths = inputs_before_sampler_node.get(MetaField.IMAGE_WIDTH, [])
+        image_heights = inputs_before_sampler_node.get(MetaField.IMAGE_HEIGHT, [])
         if len(image_widths) > 0 and len(image_heights) > 0:
             pnginfo_dict["Size"] = f"{image_widths[0][1]}x{image_heights[0][1]}"
 
-        update_pnginfo_dict(MetaField.MODEL_NAME, "Model")
-        update_pnginfo_dict(MetaField.MODEL_HASH, "Model hash")
+        update_pnginfo_dict(inputs_before_sampler_node, MetaField.MODEL_NAME, "Model")
+        update_pnginfo_dict(
+            inputs_before_sampler_node, MetaField.MODEL_HASH, "Model hash"
+        )
 
-        pnginfo_dict.update(cls.gen_loras(inputs))
-        pnginfo_dict.update(cls.gen_embeddings(inputs))
+        update_pnginfo_dict(inputs_before_this_node, MetaField.VAE_NAME, "VAE")
+        update_pnginfo_dict(inputs_before_this_node, MetaField.VAE_HASH, "VAE hash")
 
-        hashes_for_civitai = cls.get_hashes_for_civitai(inputs)
+        pnginfo_dict.update(cls.gen_loras(inputs_before_sampler_node))
+        pnginfo_dict.update(cls.gen_embeddings(inputs_before_sampler_node))
+
+        hashes_for_civitai = cls.get_hashes_for_civitai(
+            inputs_before_sampler_node, inputs_before_this_node
+        )
         if len(hashes_for_civitai) > 0:
             pnginfo_dict["Hashes"] = json.dumps(hashes_for_civitai)
 
@@ -121,22 +134,30 @@ class Capture:
         return result + ", ".join(s_list)
 
     @classmethod
-    def get_hashes_for_civitai(cls, inputs):
+    def get_hashes_for_civitai(
+        cls, inputs_before_sampler_node, inputs_before_this_node
+    ):
         resource_hashes = {}
-        model_hashes = inputs.get(MetaField.MODEL_HASH, [])
+        model_hashes = inputs_before_sampler_node.get(MetaField.MODEL_HASH, [])
         if len(model_hashes) > 0:
             resource_hashes["model"] = model_hashes[0][1]
 
-        lora_model_names = inputs.get(MetaField.LORA_MODEL_NAME, [])
-        lora_model_hashes = inputs.get(MetaField.LORA_MODEL_HASH, [])
+        vae_hashes = inputs_before_this_node.get(MetaField.VAE_HASH, [])
+        if len(vae_hashes) > 0:
+            resource_hashes["vae"] = vae_hashes[0][1]
+
+        lora_model_names = inputs_before_sampler_node.get(MetaField.LORA_MODEL_NAME, [])
+        lora_model_hashes = inputs_before_sampler_node.get(
+            MetaField.LORA_MODEL_HASH, []
+        )
         for lora_model_name, lora_model_hash in zip(
             lora_model_names, lora_model_hashes
         ):
             lora_model_name = os.path.splitext(os.path.basename(lora_model_name[1]))[0]
             resource_hashes[f"lora:{lora_model_name}"] = lora_model_hash[1]
 
-        embedding_names = inputs.get(MetaField.EMBEDDING_NAME, [])
-        embedding_hashes = inputs.get(MetaField.EMBEDDING_HASH, [])
+        embedding_names = inputs_before_sampler_node.get(MetaField.EMBEDDING_NAME, [])
+        embedding_hashes = inputs_before_sampler_node.get(MetaField.EMBEDDING_HASH, [])
         for embedding_name, embedding_hash in zip(embedding_names, embedding_hashes):
             embedding_name = os.path.splitext(os.path.basename(embedding_name[1]))[0]
             resource_hashes[f"embed:{embedding_name}"] = embedding_hash[1]

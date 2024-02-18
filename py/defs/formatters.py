@@ -18,6 +18,11 @@ def calc_model_hash(model_name, input_data):
     return calc_hash(filename)
 
 
+def calc_vae_hash(model_name, input_data):
+    filename = folder_paths.get_full_path("vae", model_name)
+    return calc_hash(filename)
+
+
 def calc_lora_hash(model_name, input_data):
     filename = folder_paths.get_full_path("loras", model_name)
     return calc_hash(filename)

@@ -2,6 +2,7 @@ from .meta import MetaField
 from .validators import is_positive_prompt, is_negative_prompt
 from .formatters import (
     calc_model_hash,
+    calc_vae_hash,
     calc_lora_hash,
     convert_skip_clip,
     get_scaled_width,
@@ -21,6 +22,10 @@ CAPTURE_FIELD_LIST = {
             "field_name": "stop_at_clip_layer",
             "format": convert_skip_clip,
         },
+    },
+    "VAELoader": {
+        MetaField.VAE_NAME: {"field_name": "vae_name"},
+        MetaField.VAE_HASH: {"field_name": "vae_name", "format": calc_vae_hash},
     },
     "EmptyLatentImage": {
         MetaField.IMAGE_WIDTH: {"field_name": "width"},

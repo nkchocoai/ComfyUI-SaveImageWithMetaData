@@ -4,6 +4,8 @@ from enum import IntEnum
 class MetaField(IntEnum):
     MODEL_NAME = 0
     MODEL_HASH = 1
+    VAE_NAME = 2
+    VAE_HASH = 3
     POSITIVE_PROMPT = 10
     NEGATIVE_PROMPT = 11
     CLIP_SKIP = 12
