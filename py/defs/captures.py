@@ -75,5 +75,6 @@ CAPTURE_FIELD_LIST = {
             "format": calc_lora_hash,
         },
         MetaField.LORA_STRENGTH_MODEL: {"field_name": "strength_model"},
+        MetaField.LORA_STRENGTH_CLIP: {"value": 0},
     },
 }

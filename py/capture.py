@@ -35,6 +35,12 @@ class Capture:
 
                         if meta not in inputs:
                             inputs[meta] = []
+
+                        value = field_data.get("value")
+                        if value is not None:
+                            inputs[meta].append((node_id, value))
+                            continue
+
                         field_name = field_data["field_name"]
                         value = input_data.get(field_name)
                         if value is not None:
@@ -84,6 +90,8 @@ class Capture:
         update_pnginfo_dict(MetaField.MODEL_NAME, "Model")
         update_pnginfo_dict(MetaField.MODEL_HASH, "Model hash")
 
+        pnginfo_dict.update(cls.gen_loras(inputs))
+
         hashes_for_civitai = cls.get_hashes_for_civitai(inputs)
         if len(hashes_for_civitai) > 0:
             pnginfo_dict["Hashes"] = json.dumps(hashes_for_civitai)
@@ -123,3 +131,25 @@ class Capture:
             resource_hashes[f"lora:{lora_model_name}"] = lora_model_hash[1]
 
         return resource_hashes
+
+    @classmethod
+    def gen_loras(cls, inputs):
+        pnginfo_dict = {}
+
+        model_names = inputs.get(MetaField.LORA_MODEL_NAME, [])
+        model_hashes = inputs.get(MetaField.LORA_MODEL_HASH, [])
+        strength_models = inputs.get(MetaField.LORA_STRENGTH_MODEL, [])
+        strength_clips = inputs.get(MetaField.LORA_STRENGTH_CLIP, [])
+
+        index = 0
+        for model_name, model_hashe, strength_model, strength_clip in zip(
+            model_names, model_hashes, strength_models, strength_clips
+        ):
+            field_prefix = f"Lora_{index}"
+            pnginfo_dict[f"{field_prefix} Model name"] = os.path.basename(model_name[1])
+            pnginfo_dict[f"{field_prefix} Model hash"] = model_hashe[1]
+            pnginfo_dict[f"{field_prefix} Strength model"] = strength_model[1]
+            pnginfo_dict[f"{field_prefix} Strength clip"] = strength_clip[1]
+            index += 1
+
+        return pnginfo_dict
