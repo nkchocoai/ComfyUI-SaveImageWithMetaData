@@ -1,3 +1,5 @@
+import json
+
 from . import hook
 from .defs.captures import CAPTURE_FIELD_LIST
 from .defs.meta import MetaField
@@ -81,6 +83,10 @@ class Capture:
         update_pnginfo_dict(MetaField.MODEL_NAME, "Model")
         update_pnginfo_dict(MetaField.MODEL_HASH, "Model hash")
 
+        hashes_for_civitai = cls.get_hashes_for_civitai(inputs)
+        if len(hashes_for_civitai) > 0:
+            pnginfo_dict["Hashes"] = json.dumps(hashes_for_civitai)
+
         return pnginfo_dict
 
     @classmethod
@@ -99,3 +105,12 @@ class Capture:
             s_list.append(f"{k}: {s}")
 
         return result + ", ".join(s_list)
+
+    @classmethod
+    def get_hashes_for_civitai(cls, inputs):
+        resource_hashes = {}
+        x = inputs.get(MetaField.MODEL_HASH, [])
+        if len(x) > 0:
+            resource_hashes["model"] = x[0][1]
+
+        return resource_hashes
