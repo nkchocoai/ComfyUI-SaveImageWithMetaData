@@ -2,6 +2,7 @@ from .meta import MetaField
 from .validators import is_positive_prompt, is_negative_prompt
 from .formatters import (
     calc_model_hash,
+    calc_lora_hash,
     convert_skip_clip,
     get_scaled_width,
     get_scaled_height,
@@ -57,5 +58,22 @@ CAPTURE_FIELD_LIST = {
             "field_name": "scale_by",
             "format": get_scaled_height,
         },
+    },
+    "LoraLoader": {
+        MetaField.LORA_MODEL_NAME: {"field_name": "lora_name"},
+        MetaField.LORA_MODEL_HASH: {
+            "field_name": "lora_name",
+            "format": calc_lora_hash,
+        },
+        MetaField.LORA_STRENGTH_MODEL: {"field_name": "strength_model"},
+        MetaField.LORA_STRENGTH_CLIP: {"field_name": "strength_clip"},
+    },
+    "LoraLoaderModelOnly": {
+        MetaField.LORA_MODEL_NAME: {"field_name": "lora_name"},
+        MetaField.LORA_MODEL_HASH: {
+            "field_name": "lora_name",
+            "format": calc_lora_hash,
+        },
+        MetaField.LORA_STRENGTH_MODEL: {"field_name": "strength_model"},
     },
 }

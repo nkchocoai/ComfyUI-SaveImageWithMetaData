@@ -1,4 +1,5 @@
 import json
+import os
 
 from . import hook
 from .defs.captures import CAPTURE_FIELD_LIST
@@ -109,8 +110,16 @@ class Capture:
     @classmethod
     def get_hashes_for_civitai(cls, inputs):
         resource_hashes = {}
-        x = inputs.get(MetaField.MODEL_HASH, [])
-        if len(x) > 0:
-            resource_hashes["model"] = x[0][1]
+        model_hashes = inputs.get(MetaField.MODEL_HASH, [])
+        if len(model_hashes) > 0:
+            resource_hashes["model"] = model_hashes[0][1]
+
+        lora_model_names = inputs.get(MetaField.LORA_MODEL_NAME, [])
+        lora_model_hashes = inputs.get(MetaField.LORA_MODEL_HASH, [])
+        for lora_model_name, lora_model_hash in zip(
+            lora_model_names, lora_model_hashes
+        ):
+            lora_model_name = os.path.splitext(os.path.basename(lora_model_name[1]))[0]
+            resource_hashes[f"lora:{lora_model_name}"] = lora_model_hash[1]
 
         return resource_hashes
