@@ -108,7 +108,7 @@ class SaveImageWithMetaData(BaseNode):
 
         # get sampler node before this node
         trace_tree_from_this_node = Trace.trace(
-            hook.current_node_id, hook.current_prompt
+            hook.current_save_image_node_id, hook.current_prompt
         )
         inputs_before_this_node = Trace.filter_inputs_by_trace_tree(
             inputs, trace_tree_from_this_node

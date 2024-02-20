@@ -1,6 +1,6 @@
 import functools
 
-from .hook import pre_execute, pre_recursive_execute
+from .hook import pre_execute, pre_get_input_data
 import execution
 
 
@@ -19,6 +19,4 @@ execution.PromptExecutor.execute = prefix_function(
 )
 
 
-execution.recursive_execute = prefix_function(
-    execution.recursive_execute, pre_recursive_execute
-)
+execution.get_input_data = prefix_function(execution.get_input_data, pre_get_input_data)

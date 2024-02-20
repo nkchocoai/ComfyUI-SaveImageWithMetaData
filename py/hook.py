@@ -1,7 +1,9 @@
+from .nodes.node import SaveImageWithMetaData
+
 current_prompt = {}
 current_extra_data = {}
 prompt_executer = None
-current_node_id = -1
+current_save_image_node_id = -1
 
 
 def pre_execute(self, prompt, prompt_id, extra_data, execute_outputs):
@@ -14,17 +16,8 @@ def pre_execute(self, prompt, prompt_id, extra_data, execute_outputs):
     prompt_executer = self
 
 
-def pre_recursive_execute(
-    server,
-    prompt,
-    outputs,
-    current_item,
-    extra_data,
-    executed,
-    prompt_id,
-    outputs_ui,
-    object_storage,
-):
-    global current_node_id
+def pre_get_input_data(inputs, class_def, unique_id, *args):
+    global current_save_image_node_id
 
-    current_node_id = current_item
+    if class_def == SaveImageWithMetaData:
+        current_save_image_node_id = unique_id
