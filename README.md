@@ -18,6 +18,33 @@ git clone https://github.com/nkchocoai/ComfyUI-SaveImageWithMetaData.git
 - Metadata is extracted from the input of the KSampler node found by `sampler_selection_method` and the input of the previously executed node.
   - Target KSampler nodes are the key of `SAMPLERS` in the file [py/defs/samplers.py](py/defs/samplers.py) and the file in [py/defs/ext/](py/defs/ext/).
 
+#### filename_prefix
+- The string (Key) specified in `filename_prefix` will be replaced with the retrieved information.
+
+| Key             | Information to be replaced            |
+| --------------- | ------------------------------------- |
+| %seed%          | seed value                            |
+| %width%         | Image width                           |
+| %height%        | Image height                          |
+| %pprompt%       | Positive Prompt                       |
+| %pprompt:[n]%   | first n characters of Positive Prompt |
+| %nprompt%       | Negative Prompt                       |
+| %nprompt:[n]%   | First n characters of Negative Prompt |
+| %model%         | Checkpoint name                       |
+| %model:[n]%     | First n characters of Checkpoint name |
+| %date:[format]% | Date of generation                    |
+
+- See the following table for the identifier specified by `[format]` in `%date:[format]%`.
+
+| Identifier | Description |
+| ---------- | ----------- |
+| yyyy       | year        |
+| MM         | month       |
+| dd         | day         |
+| hh         | hour        |
+| mm         | minute      |
+| ss         | second      |
+
 #### sampler_selection_method
 - Specifies how to select a KSampler node that has been executed before this node.
 
