@@ -1,5 +1,8 @@
 import json
 import os
+import re
+
+from datetime import datetime
 
 from PIL import Image
 from PIL.PngImagePlugin import PngInfo
@@ -45,6 +48,8 @@ class SaveImageWithMetaData(BaseNode):
 
     OUTPUT_NODE = True
 
+    pattern_format = re.compile(r"(%[^%]+%)")
+
     def save_images(
         self,
         images,
@@ -54,23 +59,15 @@ class SaveImageWithMetaData(BaseNode):
         prompt=None,
         extra_pnginfo=None,
     ):
-        (
-            full_output_folder,
-            filename,
-            counter,
-            subfolder,
-            filename_prefix,
-        ) = folder_paths.get_save_image_path(
-            filename_prefix, self.output_dir, images[0].shape[1], images[0].shape[0]
+        pnginfo_dict_src = self.gen_pnginfo(
+            sampler_selection_method, sampler_selection_node_id
         )
         results = list()
         for index, image in enumerate(images):
             i = 255.0 * image.cpu().numpy()
             img = Image.fromarray(np.clip(i, 0, 255).astype(np.uint8))
 
-            pnginfo_dict = self.gen_pnginfo(
-                sampler_selection_method, sampler_selection_node_id
-            )
+            pnginfo_dict = pnginfo_dict_src.copy()
             if len(images) >= 2:
                 pnginfo_dict["Batch index"] = index
                 pnginfo_dict["Batch size"] = len(images)
@@ -88,7 +85,21 @@ class SaveImageWithMetaData(BaseNode):
                     for x in extra_pnginfo:
                         metadata.add_text(x, json.dumps(extra_pnginfo[x]))
 
+            filename_prefix = self.format_filename(filename_prefix, pnginfo_dict)
+            output_path = os.path.join(self.output_dir, filename_prefix)
+            if not os.path.exists(os.path.dirname(output_path)):
+                os.makedirs(os.path.dirname(output_path), exist_ok=True)
+            (
+                full_output_folder,
+                filename,
+                counter,
+                subfolder,
+                filename_prefix,
+            ) = folder_paths.get_save_image_path(
+                filename_prefix, self.output_dir, images[0].shape[1], images[0].shape[0]
+            )
             file = f"{filename}_{counter:05}_.png"
+
             img.save(
                 os.path.join(full_output_folder, file),
                 pnginfo=metadata,
@@ -130,3 +141,52 @@ class SaveImageWithMetaData(BaseNode):
             inputs_before_sampler_node, inputs_before_this_node
         )
         return pnginfo_dict
+
+    @classmethod
+    def format_filename(cls, filename, pnginfo_dict):
+        result = re.findall(cls.pattern_format, filename)
+        for segment in result:
+            parts = segment.replace("%", "").split(":")
+            key = parts[0]
+            if key == "seed":
+                filename = filename.replace(segment, str(pnginfo_dict.get("Seed", "")))
+            elif key == "width":
+                w = pnginfo_dict.get("Size", "x").split("x")[0]
+                filename = filename.replace(segment, str(w))
+            elif key == "height":
+                w = pnginfo_dict.get("Size", "x").split("x")[1]
+                filename = filename.replace(segment, str(w))
+            elif key == "pprompt":
+                prompt = pnginfo_dict.get("Positive prompt", "").replace("\n", " ")
+                if len(parts) >= 2:
+                    length = int(parts[1])
+                    prompt = prompt[:length]
+                filename = filename.replace(segment, prompt.strip())
+            elif key == "nprompt":
+                prompt = pnginfo_dict.get("Negative prompt", "").replace("\n", " ")
+                if len(parts) >= 2:
+                    length = int(parts[1])
+                    prompt = prompt[:length]
+                filename = filename.replace(segment, prompt.strip())
+            elif key == "model":
+                model = pnginfo_dict.get("Model", "")
+                model = os.path.splitext(os.path.basename(model))[0]
+                if len(parts) >= 2:
+                    length = int(parts[1])
+                    model = model[:length]
+                filename = filename.replace(segment, model)
+            elif key == "date" and len(parts) >= 2:
+                date_format = parts[1]
+                now = datetime.now()
+                date_table = {
+                    "yyyy": now.year,
+                    "MM": now.hour,
+                    "dd": now.day,
+                    "hh": now.hour,
+                    "mm": now.minute,
+                    "ss": now.second,
+                }
+                for k, v in date_table.items():
+                    date_format = date_format.replace(k, str(v).zfill(len(k)))
+                filename = filename.replace(segment, date_format)
+        return filename
