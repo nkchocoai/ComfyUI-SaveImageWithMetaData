@@ -175,8 +175,7 @@ class SaveImageWithMetaData(BaseNode):
                     length = int(parts[1])
                     model = model[:length]
                 filename = filename.replace(segment, model)
-            elif key == "date" and len(parts) >= 2:
-                date_format = parts[1]
+            elif key == "date":
                 now = datetime.now()
                 date_table = {
                     "yyyy": now.year,
@@ -186,7 +185,15 @@ class SaveImageWithMetaData(BaseNode):
                     "mm": now.minute,
                     "ss": now.second,
                 }
-                for k, v in date_table.items():
-                    date_format = date_format.replace(k, str(v).zfill(len(k)))
-                filename = filename.replace(segment, date_format)
+                if len(parts) >= 2:
+                    date_format = parts[1]
+                    for k, v in date_table.items():
+                        date_format = date_format.replace(k, str(v).zfill(len(k)))
+                    filename = filename.replace(segment, date_format)
+                else:
+                    date_format = "yyyyMMddhhmmss"
+                    for k, v in date_table.items():
+                        date_format = date_format.replace(k, str(v).zfill(len(k)))
+                    filename = filename.replace(segment, date_format)
+
         return filename
