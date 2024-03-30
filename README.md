@@ -32,6 +32,7 @@ git clone https://github.com/nkchocoai/ComfyUI-SaveImageWithMetaData.git
 | %nprompt:[n]%   | First n characters of Negative Prompt |
 | %model%         | Checkpoint name                       |
 | %model:[n]%     | First n characters of Checkpoint name |
+| %date%          | Date of generation(yyyyMMddhhmmss)    |
 | %date:[format]% | Date of generation                    |
 
 - See the following table for the identifier specified by `[format]` in `%date:[format]%`.

@@ -30,6 +30,7 @@ git clone https://github.com/nkchocoai/ComfyUI-SaveImageWithMetaData.git
 | %nprompt:<文字数n>%   | Negative Promptの先頭n文字 |
 | %model%               | Checkpoint名               |
 | %model:<文字数n>%     | Checkpoint名の先頭n文字    |
+| %date%                | 生成日時(yyyyMMddhhmmss)   |
 | %date:<フォーマット>% | 生成日時                   |
 
 - `%date:<フォーマット>%` の `<フォーマット>` で指定する識別子は以下の表を参照ください。
