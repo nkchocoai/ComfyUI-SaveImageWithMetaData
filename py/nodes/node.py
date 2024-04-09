@@ -179,7 +179,7 @@ class SaveImageWithMetaData(BaseNode):
                 now = datetime.now()
                 date_table = {
                     "yyyy": now.year,
-                    "MM": now.hour,
+                    "MM": now.month,
                     "dd": now.day,
                     "hh": now.hour,
                     "mm": now.minute,
