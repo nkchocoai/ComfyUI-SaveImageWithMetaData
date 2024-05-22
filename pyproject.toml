@@ -1,0 +1,14 @@
+[project]
+name = "comfyui-saveimagewithmetadata"
+description = "Add a node to save images with metadata (PNGInfo) extracted from the input values of each node.\nSince the values are extracted dynamically, values output by various extension nodes can be added to metadata."
+version = "1.0.0"
+license = "LICENSE"
+
+[project.urls]
+Repository = "https://github.com/nkchocoai/ComfyUI-SaveImageWithMetaData"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = ""
+DisplayName = "ComfyUI-SaveImageWithMetaData"
+Icon = ""
