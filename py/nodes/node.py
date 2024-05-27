@@ -8,6 +8,9 @@ from PIL import Image
 from PIL.PngImagePlugin import PngInfo
 import numpy as np
 
+import piexif
+import piexif.helper
+
 import folder_paths
 from comfy.cli_args import args
 
@@ -22,6 +25,8 @@ from ..defs.combo import SAMPLER_SELECTION_METHOD
 
 # refer. https://github.com/comfyanonymous/ComfyUI/blob/38b7ac6e269e6ecc5bdd6fefdfb2fb1185b09c9d/nodes.py#L1411
 class SaveImageWithMetaData(BaseNode):
+    SAVE_FILE_FORMATS = ["png", "jpeg", "webp"]
+
     def __init__(self):
         self.output_dir = folder_paths.get_output_directory()
         self.type = "output"
@@ -39,6 +44,13 @@ class SaveImageWithMetaData(BaseNode):
                     "INT",
                     {"default": 0, "min": 0, "max": 999999999, "step": 1},
                 ),
+                "file_format": (s.SAVE_FILE_FORMATS,),
+            },
+            "optional": {
+                "lossless_webp": ("BOOLEAN", {"default": True}),
+                "quality": ("INT", {"default": 100, "min": 1, "max": 100}),
+                "save_workflow_json": ("BOOLEAN", {"default": False}),
+                "add_counter_to_filename": ("BOOLEAN", {"default": True}),
             },
             "hidden": {"prompt": "PROMPT", "extra_pnginfo": "EXTRA_PNGINFO"},
         }
@@ -56,6 +68,11 @@ class SaveImageWithMetaData(BaseNode):
         filename_prefix="ComfyUI",
         sampler_selection_method=SAMPLER_SELECTION_METHOD[0],
         sampler_selection_node_id=0,
+        file_format="png",
+        lossless_webp=True,
+        quality=100,
+        save_workflow_json=False,
+        add_counter_to_filename=True,
         prompt=None,
         extra_pnginfo=None,
     ):
@@ -73,12 +90,12 @@ class SaveImageWithMetaData(BaseNode):
                 pnginfo_dict["Batch size"] = len(images)
 
             metadata = None
+            parameters = ""
             if not args.disable_metadata:
                 metadata = PngInfo()
+                parameters = Capture.gen_parameters_str(pnginfo_dict)
                 if pnginfo_dict:
-                    metadata.add_text(
-                        "parameters", Capture.gen_parameters_str(pnginfo_dict)
-                    )
+                    metadata.add_text("parameters", parameters)
                 if prompt is not None:
                     metadata.add_text("prompt", json.dumps(prompt))
                 if extra_pnginfo is not None:
@@ -98,13 +115,43 @@ class SaveImageWithMetaData(BaseNode):
             ) = folder_paths.get_save_image_path(
                 filename_prefix, self.output_dir, images[0].shape[1], images[0].shape[0]
             )
-            file = f"{filename}_{counter:05}_.png"
+            base_filename = filename
+            if add_counter_to_filename:
+                base_filename += f"_{counter:05}_"
+            file = base_filename + "." + file_format
+            file_path = os.path.join(full_output_folder, file)
 
-            img.save(
-                os.path.join(full_output_folder, file),
-                pnginfo=metadata,
-                compress_level=self.compress_level,
-            )
+            if file_format == "png":
+                img.save(
+                    file_path,
+                    pnginfo=metadata,
+                    compress_level=self.compress_level,
+                )
+            else:
+                img.save(
+                    file_path,
+                    optimize=True,
+                    quality=quality,
+                    lossless=lossless_webp,
+                )
+                exif_bytes = piexif.dump(
+                    {
+                        "Exif": {
+                            piexif.ExifIFD.UserComment: piexif.helper.UserComment.dump(
+                                parameters, encoding="unicode"
+                            ),
+                        },
+                    }
+                )
+                piexif.insert(exif_bytes, file_path)
+
+            if save_workflow_json:
+                file_path_workflow = os.path.join(
+                    full_output_folder, f"{base_filename}.json"
+                )
+                with open(file_path_workflow, "w", encoding="utf-8") as f:
+                    json.dump(extra_pnginfo["workflow"], f)
+
             results.append(
                 {"filename": file, "subfolder": subfolder, "type": self.type}
             )
