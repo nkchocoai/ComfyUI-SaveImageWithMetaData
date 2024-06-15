@@ -78,7 +78,8 @@ def _extract_embedding_names(text, input_data):
         for word in to_tokenize:
             # if we find an embedding, deal with the embedding
             if (
-                word.startswith(tokenizer.embedding_identifier)
+                hasattr(tokenizer, "embedding_identifier")
+                and word.startswith(tokenizer.embedding_identifier)
                 and tokenizer.embedding_directory is not None
             ):
                 embedding_name = word[len(tokenizer.embedding_identifier) :].strip("\n")
