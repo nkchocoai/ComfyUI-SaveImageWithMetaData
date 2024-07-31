@@ -19,7 +19,6 @@ def get_lora_strength(node_id, obj, prompt, extra_data, outputs, input_data):
 
 
 def get_lora_data(input_data, attribute):
-    print(input_data)
     return [
         v[0][attribute]
         for k, v in input_data.items()
