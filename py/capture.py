@@ -41,6 +41,18 @@ class Capture:
                             inputs[meta].append((node_id, value))
                             continue
 
+                        selector = field_data.get("selector")
+                        if selector is not None:
+                            v = selector(
+                                node_id, obj, prompt, extra_data, outputs, input_data
+                            )
+                            if isinstance(v, list):
+                                for x in v:
+                                    inputs[meta].append((node_id, x))
+                            elif v is not None:
+                                inputs[meta].append((node_id, v))
+                            continue
+
                         field_name = field_data["field_name"]
                         value = input_data.get(field_name)
                         if value is not None:
