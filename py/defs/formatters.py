@@ -28,6 +28,11 @@ def calc_lora_hash(model_name, input_data):
     return calc_hash(filename)
 
 
+def calc_unet_hash(model_name, input_data):
+    filename = folder_paths.get_full_path("unet", model_name)
+    return calc_hash(filename)
+
+
 def convert_skip_clip(stop_at_clip_layer, input_data):
     return stop_at_clip_layer * -1
 
