@@ -4,6 +4,7 @@ from .formatters import (
     calc_model_hash,
     calc_vae_hash,
     calc_lora_hash,
+    calc_unet_hash,
     convert_skip_clip,
     get_scaled_width,
     get_scaled_height,
@@ -91,5 +92,20 @@ CAPTURE_FIELD_LIST = {
         },
         MetaField.LORA_STRENGTH_MODEL: {"field_name": "strength_model"},
         MetaField.LORA_STRENGTH_CLIP: {"value": 0},
+    },
+    # Flux - https://comfyanonymous.github.io/ComfyUI_examples/flux/
+    "UNETLoader": {
+        MetaField.MODEL_NAME: {"field_name": "unet_name"},
+        MetaField.MODEL_HASH: {"field_name": "unet_name", "format": calc_unet_hash},
+    },
+    "RandomNoise": {
+        MetaField.SEED: {"field_name": "noise_seed"},
+    },
+    "BasicScheduler": {
+        MetaField.STEPS: {"field_name": "steps"},
+        MetaField.SCHEDULER: {"field_name": "scheduler"},
+    },
+    "KSamplerSelect": {
+        MetaField.SAMPLER_NAME: {"field_name": "sampler_name"},
     },
 }

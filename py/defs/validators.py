@@ -18,7 +18,8 @@ def _get_node_id_list(prompt, field_name):
             if node["class_type"] == sampler_type:
                 # There are nodes between "KSampler" and "CLIP Text Encode" in the SD3 workflow
                 d = deque()
-                d.append(node["inputs"][field_map[field_name]][0])
+                if field_name in field_map and field_map[field_name] in node["inputs"]:
+                    d.append(node["inputs"][field_map[field_name]][0])
                 while len(d) > 0:
                     nid2 = d.popleft()
                     class_type = prompt[nid2]["class_type"]
