@@ -64,7 +64,7 @@ def extract_embedding_hashes(text, input_data):
 
 
 def _extract_embedding_names(text, input_data):
-    clip = input_data["clip"][0]
+    clip = input_data[0]["clip"][0]
     tokenizer = clip.tokenizer
     if isinstance(tokenizer, SD1Tokenizer):
         tokenizer = tokenizer.clip_l

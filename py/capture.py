@@ -7,6 +7,7 @@ from .defs.meta import MetaField
 
 from nodes import NODE_CLASS_MAPPINGS
 from execution import get_input_data
+from comfy_execution.graph import DynamicPrompt
 
 
 class Capture:
@@ -15,14 +16,14 @@ class Capture:
         inputs = {}
         prompt = hook.current_prompt
         extra_data = hook.current_extra_data
-        outputs = hook.prompt_executer.outputs
+        outputs = hook.prompt_executer.caches.outputs
 
         for node_id, obj in prompt.items():
             class_type = obj["class_type"]
             obj_class = NODE_CLASS_MAPPINGS[class_type]
             node_inputs = prompt[node_id]["inputs"]
             input_data = get_input_data(
-                node_inputs, obj_class, node_id, outputs, prompt, extra_data
+                node_inputs, obj_class, node_id, outputs, DynamicPrompt(prompt), extra_data
             )
             for node_class, metas in CAPTURE_FIELD_LIST.items():
                 if class_type == node_class:
@@ -54,7 +55,7 @@ class Capture:
                             continue
 
                         field_name = field_data["field_name"]
-                        value = input_data.get(field_name)
+                        value = input_data[0].get(field_name)
                         if value is not None:
                             format = field_data.get("format")
                             v = value
