@@ -38,12 +38,12 @@ def convert_skip_clip(stop_at_clip_layer, input_data):
 
 
 def get_scaled_width(scaled_by, input_data):
-    samples = input_data["samples"][0]["samples"]
+    samples = input_data[0]["samples"][0]["samples"]
     return round(samples.shape[3] * scaled_by * 8)
 
 
 def get_scaled_height(scaled_by, input_data):
-    samples = input_data["samples"][0]["samples"]
+    samples = input_data[0]["samples"][0]["samples"]
     return round(samples.shape[2] * scaled_by * 8)
 
 
