@@ -51,6 +51,7 @@ class SaveImageWithMetaData(BaseNode):
                 "quality": ("INT", {"default": 100, "min": 1, "max": 100}),
                 "save_workflow_json": ("BOOLEAN", {"default": False}),
                 "add_counter_to_filename": ("BOOLEAN", {"default": True}),
+                "civitai_sampler": ("BOOLEAN", {"default": False})
             },
             "hidden": {"prompt": "PROMPT", "extra_pnginfo": "EXTRA_PNGINFO"},
         }
@@ -73,11 +74,12 @@ class SaveImageWithMetaData(BaseNode):
         quality=100,
         save_workflow_json=False,
         add_counter_to_filename=True,
+        civitai_sampler = False,
         prompt=None,
         extra_pnginfo=None,
     ):
         pnginfo_dict_src = self.gen_pnginfo(
-            sampler_selection_method, sampler_selection_node_id
+            sampler_selection_method, sampler_selection_node_id, civitai_sampler
         )
         results = list()
         for index, image in enumerate(images):
@@ -160,7 +162,7 @@ class SaveImageWithMetaData(BaseNode):
         return {"ui": {"images": results}}
 
     @classmethod
-    def gen_pnginfo(cls, sampler_selection_method, sampler_selection_node_id):
+    def gen_pnginfo(cls, sampler_selection_method, sampler_selection_node_id, save_civitai_sampler):
         # get all node inputs
         inputs = Capture.get_inputs()
 
@@ -185,7 +187,7 @@ class SaveImageWithMetaData(BaseNode):
 
         # generate PNGInfo from inputs
         pnginfo_dict = Capture.gen_pnginfo_dict(
-            inputs_before_sampler_node, inputs_before_this_node
+            inputs_before_sampler_node, inputs_before_this_node, save_civitai_sampler
         )
         return pnginfo_dict
 
