@@ -97,7 +97,7 @@ class Capture:
                 if scheduler != "normal":
                     pnginfo_dict["Sampler"] += "_" + scheduler
 
-        update_pnginfo_dict(inputs_before_sampler_node, MetaField.CFG, "CFG Scale")
+        update_pnginfo_dict(inputs_before_sampler_node, MetaField.CFG, "CFG scale")
         update_pnginfo_dict(inputs_before_sampler_node, MetaField.SEED, "Seed")
 
         update_pnginfo_dict(
