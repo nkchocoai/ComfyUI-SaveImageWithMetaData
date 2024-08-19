@@ -21,7 +21,7 @@ def get_lora_strength(node_id, obj, prompt, extra_data, outputs, input_data):
 def get_lora_data(input_data, attribute):
     return [
         v[0][attribute]
-        for k, v in input_data.items()
+        for k, v in input_data[0].items()
         if k.startswith("lora_") and v[0]["on"]
     ]
 
@@ -44,7 +44,7 @@ def get_lora_strength_stack(node_id, obj, prompt, extra_data, outputs, input_dat
 def get_lora_data_stack(input_data, attribute):
     return [
         v[0]
-        for k, v in input_data.items()
+        for k, v in input_data[0].items()
         if k.startswith(attribute + "_") and v[0] != "None"
     ]
 
