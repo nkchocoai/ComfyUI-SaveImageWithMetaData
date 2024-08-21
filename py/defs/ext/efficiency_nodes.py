@@ -17,22 +17,22 @@ def get_lora_model_hash_stack(node_id, obj, prompt, extra_data, outputs, input_d
 def get_lora_strength_model_stack(
     node_id, obj, prompt, extra_data, outputs, input_data
 ):
-    if input_data["input_mode"][0] == "advanced":
+    if input_data[0]["input_mode"][0] == "advanced":
         return get_lora_data_stack(input_data, "model_str")
     return get_lora_data_stack(input_data, "lora_wt")
 
 
 def get_lora_strength_clip_stack(node_id, obj, prompt, extra_data, outputs, input_data):
-    if input_data["input_mode"][0] == "advanced":
+    if input_data[0]["input_mode"][0] == "advanced":
         return get_lora_data_stack(input_data, "clip_str")
     return get_lora_data_stack(input_data, "lora_wt")
 
 
 def get_lora_data_stack(input_data, attribute):
-    lora_count = input_data["lora_count"][0]
+    lora_count = input_data[0]["lora_count"][0]
     return [
         v[0]
-        for k, v in input_data.items()
+        for k, v in input_data[0].items()
         if k.startswith(attribute) and v[0] != "None"
     ][:lora_count]
 
