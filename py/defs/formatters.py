@@ -72,6 +72,8 @@ def _extract_embedding_names(text, input_data):
         tokenizer = tokenizer.clip_h
     elif isinstance(tokenizer, SDXLTokenizer):
         tokenizer = tokenizer.clip_l
+    if not isinstance(text,str):
+        text = "".join(str(item) if item is not None else "" for item in text)    
     text = escape_important(text)
     parsed_weights = token_weights(text, 1.0)
 
