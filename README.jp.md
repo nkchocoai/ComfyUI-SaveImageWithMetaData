@@ -58,6 +58,10 @@ git clone https://github.com/nkchocoai/ComfyUI-SaveImageWithMetaData.git
 ##### By node ID
 - ノードIDが `sampler_selection_node_id` であるKSamplerノードを選びます。
 
+### Create Extra MetaData
+- 保存する画像に追加するメタデータを指定します。
+- 例: [extra_metadata.png](examples/extra_metadata.png)。
+
 ## 付与されるメタデータ
 - Positive prompt
 - Negative prompt

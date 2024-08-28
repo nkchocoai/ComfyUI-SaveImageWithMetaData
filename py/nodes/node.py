@@ -51,7 +51,8 @@ class SaveImageWithMetaData(BaseNode):
                 "quality": ("INT", {"default": 100, "min": 1, "max": 100}),
                 "save_workflow_json": ("BOOLEAN", {"default": False}),
                 "add_counter_to_filename": ("BOOLEAN", {"default": True}),
-                "civitai_sampler": ("BOOLEAN", {"default": False})
+                "civitai_sampler": ("BOOLEAN", {"default": False}),
+                "extra_metadata": ("EXTRA_METADATA", {}),
             },
             "hidden": {"prompt": "PROMPT", "extra_pnginfo": "EXTRA_PNGINFO"},
         }
@@ -74,13 +75,18 @@ class SaveImageWithMetaData(BaseNode):
         quality=100,
         save_workflow_json=False,
         add_counter_to_filename=True,
-        civitai_sampler = False,
+        civitai_sampler=False,
+        extra_metadata={},
         prompt=None,
         extra_pnginfo=None,
     ):
         pnginfo_dict_src = self.gen_pnginfo(
             sampler_selection_method, sampler_selection_node_id, civitai_sampler
         )
+        for k, v in extra_metadata.items():
+            if k and v:
+                pnginfo_dict_src[k] = v.replace(",", "/")
+
         results = list()
         for index, image in enumerate(images):
             i = 255.0 * image.cpu().numpy()
@@ -162,7 +168,9 @@ class SaveImageWithMetaData(BaseNode):
         return {"ui": {"images": results}}
 
     @classmethod
-    def gen_pnginfo(cls, sampler_selection_method, sampler_selection_node_id, save_civitai_sampler):
+    def gen_pnginfo(
+        cls, sampler_selection_method, sampler_selection_node_id, save_civitai_sampler
+    ):
         # get all node inputs
         inputs = Capture.get_inputs()
 
@@ -246,3 +254,48 @@ class SaveImageWithMetaData(BaseNode):
                     filename = filename.replace(segment, date_format)
 
         return filename
+
+
+class CreateExtraMetaData(BaseNode):
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "key1": ("STRING", {"default": "", "multiline": False}),
+                "value1": ("STRING", {"default": "", "multiline": False}),
+            },
+            "optional": {
+                "key2": ("STRING", {"default": "", "multiline": False}),
+                "value2": ("STRING", {"default": "", "multiline": False}),
+                "key3": ("STRING", {"default": "", "multiline": False}),
+                "value3": ("STRING", {"default": "", "multiline": False}),
+                "key4": ("STRING", {"default": "", "multiline": False}),
+                "value4": ("STRING", {"default": "", "multiline": False}),
+                "extra_metadata": ("EXTRA_METADATA",),
+            },
+        }
+
+    RETURN_TYPES = ("EXTRA_METADATA",)
+    FUNCTION = "create_extra_metadata"
+
+    def create_extra_metadata(
+        self,
+        extra_metadata={},
+        key1="",
+        value1="",
+        key2="",
+        value2="",
+        key3="",
+        value3="",
+        key4="",
+        value4="",
+    ):
+        extra_metadata.update(
+            {
+                key1: value1,
+                key2: value2,
+                key3: value3,
+                key4: value4,
+            }
+        )
+        return (extra_metadata,)

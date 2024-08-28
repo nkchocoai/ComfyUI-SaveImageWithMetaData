@@ -60,6 +60,10 @@ git clone https://github.com/nkchocoai/ComfyUI-SaveImageWithMetaData.git
 ##### By node ID
 - Select the KSampler node whose node ID is `sampler_selection_node_id`.
 
+### Create Extra MetaData
+- Specifies metadata to be added to the image to be saved.
+- Example: In [extra_metadata.png](examples/extra_metadata.png).
+
 ## Metadata to be given
 - Positive prompt
 - Negative prompt
