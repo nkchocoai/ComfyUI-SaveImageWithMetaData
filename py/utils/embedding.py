@@ -4,8 +4,8 @@ from comfy.sd1_clip import expand_directory_list
 
 
 # refer. https://github.com/comfyanonymous/ComfyUI/blob/dccca1daa5af1954d55918f365e83a3331019549/comfy/sd1_clip.py#L284-L309
-def get_embedding_file_path(embedding_name, tokenizer):
-    embedding_directory = tokenizer.embedding_directory
+def get_embedding_file_path(embedding_name, clip):
+    embedding_directory = clip.embedding_directory
     if isinstance(embedding_directory, str):
         embedding_directory = [embedding_directory]
 

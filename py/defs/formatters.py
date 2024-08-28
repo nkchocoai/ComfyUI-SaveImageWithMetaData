@@ -8,6 +8,8 @@ from ..utils.embedding import get_embedding_file_path
 from comfy.sd1_clip import escape_important, token_weights, unescape_important
 from comfy.sd1_clip import SD1Tokenizer
 from comfy.text_encoders.sd2_clip import SD2Tokenizer
+from comfy.text_encoders.sd3_clip import SD3Tokenizer
+from comfy.text_encoders.flux import FluxTokenizer
 from comfy.sdxl_clip import SDXLTokenizer
 
 cache_model_hash = {}
@@ -54,26 +56,35 @@ def extract_embedding_names(text, input_data):
 
 
 def extract_embedding_hashes(text, input_data):
-    embedding_names, tokenizer = _extract_embedding_names(text, input_data)
+    embedding_names, clip = _extract_embedding_names(text, input_data)
     embedding_hashes = []
     for embedding_name in embedding_names:
-        embedding_file_path = get_embedding_file_path(embedding_name, tokenizer)
+        embedding_file_path = get_embedding_file_path(embedding_name, clip)
         embedding_hashes.append(calc_hash(embedding_file_path))
 
     return embedding_hashes
 
 
 def _extract_embedding_names(text, input_data):
-    clip = input_data[0]["clip"][0]
-    tokenizer = clip.tokenizer
-    if isinstance(tokenizer, SD1Tokenizer):
-        tokenizer = tokenizer.clip_l
-    elif isinstance(tokenizer, SD2Tokenizer):
-        tokenizer = tokenizer.clip_h
-    elif isinstance(tokenizer, SDXLTokenizer):
-        tokenizer = tokenizer.clip_l
-    if not isinstance(text,str):
-        text = "".join(str(item) if item is not None else "" for item in text)    
+    embedding_identifier = "embedding:"
+    clip_ = input_data[0]["clip"][0]
+    clip = None
+    if clip_ is not None:
+        tokenizer = clip_.tokenizer
+        if isinstance(tokenizer, SD1Tokenizer):
+            clip = tokenizer.clip_l
+        elif isinstance(tokenizer, SD2Tokenizer):
+            clip = tokenizer.clip_h
+        elif isinstance(tokenizer, SDXLTokenizer):
+            clip = tokenizer.clip_l
+        elif isinstance(tokenizer, SD3Tokenizer):
+            clip = tokenizer.clip_l
+        elif isinstance(tokenizer, FluxTokenizer):
+            clip = tokenizer.clip_l
+        if clip is not None and hasattr(clip, "embedding_identifier"):
+            embedding_identifier = clip.embedding_identifier
+    if not isinstance(text, str):
+        text = "".join(str(item) if item is not None else "" for item in text)
     text = escape_important(text)
     parsed_weights = token_weights(text, 1.0)
 
@@ -83,14 +94,12 @@ def _extract_embedding_names(text, input_data):
         to_tokenize = unescape_important(weighted_segment).replace("\n", " ").split(" ")
         to_tokenize = [x for x in to_tokenize if x != ""]
         for word in to_tokenize:
-            # if we find an embedding, deal with the embedding
+            # find an embedding, deal with the embedding
             if (
-                hasattr(tokenizer, "embedding_identifier")
-                and word.startswith(tokenizer.embedding_identifier)
-                and tokenizer.embedding_directory is not None
+                word.startswith(embedding_identifier)
+                and clip.embedding_directory is not None
             ):
-                embedding_name = word[len(tokenizer.embedding_identifier) :].strip("\n")
-
+                embedding_name = word[len(embedding_identifier) :].strip("\n")
                 embedding_names.append(embedding_name)
 
-    return embedding_names, tokenizer
+    return embedding_names, clip
