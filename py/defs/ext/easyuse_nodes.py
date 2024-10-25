@@ -73,7 +73,7 @@ CAPTURE_FIELD_LIST = {
         MetaField.IMAGE_WIDTH: {"field_name": "empty_latent_width"},
         MetaField.IMAGE_HEIGHT: {"field_name": "empty_latent_height"},
         MetaField.LORA_MODEL_NAME: {"field_name": "lora_name"},
-        MetaField.LORA_MODEL_HASH: {"field_name": "lora_name", "format": calc_lora_hash},
+        MetaField.LORA_MODEL_HASH: {"selector": get_lora_model_hash},
         MetaField.LORA_STRENGTH_MODEL: {"field_name": "lora_model_strength"},
         MetaField.LORA_STRENGTH_CLIP: {"field_name": "lora_clip_strength"},
     },
