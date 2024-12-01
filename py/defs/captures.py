@@ -93,8 +93,27 @@ CAPTURE_FIELD_LIST = {
         MetaField.LORA_STRENGTH_MODEL: {"field_name": "strength_model"},
         MetaField.LORA_STRENGTH_CLIP: {"value": 0},
     },
+    # LoraLoaderWithPreviews - https://github.com/X-T-E-R/ComfyUI-EasyCivitai-XTNodes
+    "LoraLoaderWithPreviews": {
+        MetaField.LORA_MODEL_NAME: {"field_name": "model_name"},
+        MetaField.LORA_MODEL_HASH: {
+            "field_name": "model_name",
+            "format": calc_lora_hash,
+        },
+        MetaField.LORA_STRENGTH_MODEL: {"field_name": "strength_model"},
+        MetaField.LORA_STRENGTH_CLIP: {"field_name": "strength_clip"},
+    },
     # Flux - https://comfyanonymous.github.io/ComfyUI_examples/flux/
     "UNETLoader": {
+        MetaField.MODEL_NAME: {"field_name": "unet_name"},
+        MetaField.MODEL_HASH: {"field_name": "unet_name", "format": calc_unet_hash},
+    },
+    # GGUF - https://github.com/city96/ComfyUI-GGUF/
+    "UnetLoaderGGUF": {
+        MetaField.MODEL_NAME: {"field_name": "unet_name"},
+        MetaField.MODEL_HASH: {"field_name": "unet_name", "format": calc_unet_hash},
+    },
+    "UnetLoaderGGUFAdvanced": {
         MetaField.MODEL_NAME: {"field_name": "unet_name"},
         MetaField.MODEL_HASH: {"field_name": "unet_name", "format": calc_unet_hash},
     },
