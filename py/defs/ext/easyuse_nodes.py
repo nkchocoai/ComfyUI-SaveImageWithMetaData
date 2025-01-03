@@ -52,6 +52,8 @@ SAMPLERS = {
         "positive": "positive",
         "negative": "negative",
     },
+    "easy preSampling": {
+    },
 }
 
 
@@ -83,6 +85,13 @@ CAPTURE_FIELD_LIST = {
         MetaField.LORA_STRENGTH_CLIP: {"field_name": "lora_clip_strength"},
     },
     "easy fullkSampler": {
+        MetaField.SEED: {"field_name": "seed"},
+        MetaField.STEPS: {"field_name": "steps"},
+        MetaField.CFG: {"field_name": "cfg"},
+        MetaField.SAMPLER_NAME: {"field_name": "sampler_name"},
+        MetaField.SCHEDULER: {"field_name": "scheduler"},
+    },
+    "easy preSampling": {
         MetaField.SEED: {"field_name": "seed"},
         MetaField.STEPS: {"field_name": "steps"},
         MetaField.CFG: {"field_name": "cfg"},
