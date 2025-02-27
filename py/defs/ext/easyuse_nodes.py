@@ -53,8 +53,33 @@ SAMPLERS = {
         "negative": "negative",
     },
     "easy preSampling": {
+        
     },
+    "easy preSamplingAdvanced": {
+        
+    },
+    "easy preSamplingCascade": {
+        
+    },
+    "easy preSamplingCustom": {
+        
+    },
+    "easy preSamplingDynamicCFG": {
+        
+    },
+    "easy preSamplingLayerDiffusion": {
+        
+    },
+    "easy preSamplingNoiseIn": {
+        
+    },
+    "easy preSamplingSdTurbo": {
+        
+    }
 }
+
+
+
 
 
 CAPTURE_FIELD_LIST = {
@@ -92,6 +117,55 @@ CAPTURE_FIELD_LIST = {
         MetaField.SCHEDULER: {"field_name": "scheduler"},
     },
     "easy preSampling": {
+        MetaField.SEED: {"field_name": "seed"},
+        MetaField.STEPS: {"field_name": "steps"},
+        MetaField.CFG: {"field_name": "cfg"},
+        MetaField.SAMPLER_NAME: {"field_name": "sampler_name"},
+        MetaField.SCHEDULER: {"field_name": "scheduler"},
+    },
+    "easy preSamplingAdvanced": {
+        MetaField.SEED: {"field_name": "seed"},
+        MetaField.STEPS: {"field_name": "steps"},
+        MetaField.CFG: {"field_name": "cfg"},
+        MetaField.SAMPLER_NAME: {"field_name": "sampler_name"},
+        MetaField.SCHEDULER: {"field_name": "scheduler"},
+    },
+    "easy preSamplingCascade": {
+        MetaField.SEED: {"field_name": "seed"},
+        MetaField.STEPS: {"field_name": "steps"},
+        MetaField.CFG: {"field_name": "cfg"},
+        MetaField.SAMPLER_NAME: {"field_name": "sampler_name"},
+        MetaField.SCHEDULER: {"field_name": "scheduler"},
+    },
+    "easy preSamplingCustom": {
+        MetaField.SEED: {"field_name": "seed"},
+        MetaField.STEPS: {"field_name": "steps"},
+        MetaField.CFG: {"field_name": "cfg"},
+        MetaField.SAMPLER_NAME: {"field_name": "sampler_name"},
+        MetaField.SCHEDULER: {"field_name": "scheduler"},
+    },
+    "easy preSamplingDynamicCFG": {
+        MetaField.SEED: {"field_name": "seed"},
+        MetaField.STEPS: {"field_name": "steps"},
+        MetaField.CFG: {"field_name": "cfg"},
+        MetaField.SAMPLER_NAME: {"field_name": "sampler_name"},
+        MetaField.SCHEDULER: {"field_name": "scheduler"},
+    },
+    "easy preSamplingLayerDiffusion": {
+        MetaField.SEED: {"field_name": "seed"},
+        MetaField.STEPS: {"field_name": "steps"},
+        MetaField.CFG: {"field_name": "cfg"},
+        MetaField.SAMPLER_NAME: {"field_name": "sampler_name"},
+        MetaField.SCHEDULER: {"field_name": "scheduler"},
+    },
+    "easy preSamplingNoiseIn": {
+        MetaField.SEED: {"field_name": "seed"},
+        MetaField.STEPS: {"field_name": "steps"},
+        MetaField.CFG: {"field_name": "cfg"},
+        MetaField.SAMPLER_NAME: {"field_name": "sampler_name"},
+        MetaField.SCHEDULER: {"field_name": "scheduler"},
+    },
+    "easy preSamplingSdTurbo": {
         MetaField.SEED: {"field_name": "seed"},
         MetaField.STEPS: {"field_name": "steps"},
         MetaField.CFG: {"field_name": "cfg"},
