@@ -106,7 +106,7 @@ class SaveImageWithMetaData(BaseNode):
                 parameters = Capture.gen_parameters_str(pnginfo_dict)
                 if pnginfo_dict:
                     metadata.add_text("parameters", parameters)
-                if prompt is not None:
+                if prompt is not None and save_workflow_image:
                     metadata.add_text("prompt", json.dumps(prompt))
                 if extra_pnginfo is not None:
                     for x in extra_pnginfo:
