@@ -53,6 +53,7 @@ class SaveImageWithMetaData(BaseNode):
                 "add_counter_to_filename": ("BOOLEAN", {"default": True}),
                 "civitai_sampler": ("BOOLEAN", {"default": False}),
                 "extra_metadata": ("EXTRA_METADATA", {}),
+                "save_workflow_image": ("BOOLEAN", {"default": True}),
             },
             "hidden": {"prompt": "PROMPT", "extra_pnginfo": "EXTRA_PNGINFO"},
         }
@@ -79,6 +80,7 @@ class SaveImageWithMetaData(BaseNode):
         extra_metadata={},
         prompt=None,
         extra_pnginfo=None,
+        save_workflow_image=True,
     ):
         pnginfo_dict_src = self.gen_pnginfo(
             sampler_selection_method, sampler_selection_node_id, civitai_sampler
@@ -109,7 +111,9 @@ class SaveImageWithMetaData(BaseNode):
                 if extra_pnginfo is not None:
                     for x in extra_pnginfo:
                         metadata.add_text(x, json.dumps(extra_pnginfo[x]))
-
+                if save_workflow_image == False:
+                    metadata.add_text("workflow", "")
+            
             filename_prefix = self.format_filename(filename_prefix, pnginfo_dict)
             output_path = os.path.join(self.output_dir, filename_prefix)
             if not os.path.exists(os.path.dirname(output_path)):
