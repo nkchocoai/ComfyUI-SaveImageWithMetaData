@@ -4,7 +4,12 @@ from ..formatters import calc_model_hash, calc_lora_hash, convert_skip_clip
 import re
 
 def get_lora_model_name_stack(node_id, obj, prompt, extra_data, outputs, input_data):
-    return get_lora_data_stack(input_data, "lora_\d_name")
+    toggled_on = input_data[0]["toggle"][0]
+    
+    if toggled_on:
+        return get_lora_data_stack(input_data, "lora_\d_name")
+    else:
+        return []
 
 
 def get_lora_model_hash_stack(node_id, obj, prompt, extra_data, outputs, input_data):
@@ -47,7 +52,34 @@ SAMPLERS = {
         "positive": "positive",
         "negative": "negative",
     },
+    "easy preSampling": {
+        
+    },
+    "easy preSamplingAdvanced": {
+        
+    },
+    "easy preSamplingCascade": {
+        
+    },
+    "easy preSamplingCustom": {
+        
+    },
+    "easy preSamplingDynamicCFG": {
+        
+    },
+    "easy preSamplingLayerDiffusion": {
+        
+    },
+    "easy preSamplingNoiseIn": {
+        
+    },
+    "easy preSamplingSdTurbo": {
+        
+    }
 }
+
+
+
 
 
 CAPTURE_FIELD_LIST = {
@@ -78,6 +110,62 @@ CAPTURE_FIELD_LIST = {
         MetaField.LORA_STRENGTH_CLIP: {"field_name": "lora_clip_strength"},
     },
     "easy fullkSampler": {
+        MetaField.SEED: {"field_name": "seed"},
+        MetaField.STEPS: {"field_name": "steps"},
+        MetaField.CFG: {"field_name": "cfg"},
+        MetaField.SAMPLER_NAME: {"field_name": "sampler_name"},
+        MetaField.SCHEDULER: {"field_name": "scheduler"},
+    },
+    "easy preSampling": {
+        MetaField.SEED: {"field_name": "seed"},
+        MetaField.STEPS: {"field_name": "steps"},
+        MetaField.CFG: {"field_name": "cfg"},
+        MetaField.SAMPLER_NAME: {"field_name": "sampler_name"},
+        MetaField.SCHEDULER: {"field_name": "scheduler"},
+    },
+    "easy preSamplingAdvanced": {
+        MetaField.SEED: {"field_name": "seed"},
+        MetaField.STEPS: {"field_name": "steps"},
+        MetaField.CFG: {"field_name": "cfg"},
+        MetaField.SAMPLER_NAME: {"field_name": "sampler_name"},
+        MetaField.SCHEDULER: {"field_name": "scheduler"},
+    },
+    "easy preSamplingCascade": {
+        MetaField.SEED: {"field_name": "seed"},
+        MetaField.STEPS: {"field_name": "steps"},
+        MetaField.CFG: {"field_name": "cfg"},
+        MetaField.SAMPLER_NAME: {"field_name": "sampler_name"},
+        MetaField.SCHEDULER: {"field_name": "scheduler"},
+    },
+    "easy preSamplingCustom": {
+        MetaField.SEED: {"field_name": "seed"},
+        MetaField.STEPS: {"field_name": "steps"},
+        MetaField.CFG: {"field_name": "cfg"},
+        MetaField.SAMPLER_NAME: {"field_name": "sampler_name"},
+        MetaField.SCHEDULER: {"field_name": "scheduler"},
+    },
+    "easy preSamplingDynamicCFG": {
+        MetaField.SEED: {"field_name": "seed"},
+        MetaField.STEPS: {"field_name": "steps"},
+        MetaField.CFG: {"field_name": "cfg"},
+        MetaField.SAMPLER_NAME: {"field_name": "sampler_name"},
+        MetaField.SCHEDULER: {"field_name": "scheduler"},
+    },
+    "easy preSamplingLayerDiffusion": {
+        MetaField.SEED: {"field_name": "seed"},
+        MetaField.STEPS: {"field_name": "steps"},
+        MetaField.CFG: {"field_name": "cfg"},
+        MetaField.SAMPLER_NAME: {"field_name": "sampler_name"},
+        MetaField.SCHEDULER: {"field_name": "scheduler"},
+    },
+    "easy preSamplingNoiseIn": {
+        MetaField.SEED: {"field_name": "seed"},
+        MetaField.STEPS: {"field_name": "steps"},
+        MetaField.CFG: {"field_name": "cfg"},
+        MetaField.SAMPLER_NAME: {"field_name": "sampler_name"},
+        MetaField.SCHEDULER: {"field_name": "scheduler"},
+    },
+    "easy preSamplingSdTurbo": {
         MetaField.SEED: {"field_name": "seed"},
         MetaField.STEPS: {"field_name": "steps"},
         MetaField.CFG: {"field_name": "cfg"},
