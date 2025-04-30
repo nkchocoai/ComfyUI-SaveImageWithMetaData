@@ -13,7 +13,6 @@ SAMPLERS = {
 
 CAPTURE_FIELD_LIST = {
     "FluxSettingsNode": {
-        MetaField.MODEL_NAME: {"field_name": "model"},
         MetaField.CFG: {"field_name": "guidance"},  
         MetaField.SAMPLER_NAME: {"field_name": "sampler_name"},  
         MetaField.SCHEDULER: {"field_name": "scheduler"},  
