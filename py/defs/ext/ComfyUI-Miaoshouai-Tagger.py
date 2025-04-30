@@ -6,9 +6,6 @@ SAMPLERS = {
 }
 
 CAPTURE_FIELD_LIST = {
-    "Miaoshouai_Tagger": {
-        MetaField.MODEL_NAME:    {"field_name": "model"},
-    },
     "Miaoshouai_SaveTags": {
         MetaField.POSITIVE_PROMPT: {"field_name": "captions"},
     },
