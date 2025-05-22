@@ -110,10 +110,10 @@ class SaveImageWithMetaData(BaseNode):
                     metadata.add_text("prompt", json.dumps(prompt))
                 if extra_pnginfo is not None:
                     for x in extra_pnginfo:
+                        if not save_workflow_image and x == "workflow":
+                            continue
                         metadata.add_text(x, json.dumps(extra_pnginfo[x]))
-                if save_workflow_image == False:
-                    metadata.add_text("workflow", "")
-            
+
             filename_prefix = self.format_filename(filename_prefix, pnginfo_dict)
             output_path = os.path.join(self.output_dir, filename_prefix)
             if not os.path.exists(os.path.dirname(output_path)):
